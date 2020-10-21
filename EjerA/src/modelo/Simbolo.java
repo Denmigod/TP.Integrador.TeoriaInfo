@@ -1,11 +1,10 @@
 package modelo;
 
 public class Simbolo {
-	
-	private String dato; 
+
+	private String dato;
 	private double probabilidad;
-	
-	
+
 	public Simbolo(String dato, double probabilidad) {
 		super();
 		this.dato = dato;
@@ -17,10 +16,12 @@ public class Simbolo {
 	}
 
 	public double getCantInformacion(int base) {
-		
-		
-		return (Math.log(1/probabilidad) / Math.log(base));
-		
+		double resultado = 0;
+		if (probabilidad > 0) {
+			resultado = (Math.log(1 / probabilidad) / Math.log(base));
+		}
+		return resultado;
+
 	}
 
 	public double getProbabilidad() {
@@ -30,6 +31,5 @@ public class Simbolo {
 	public void setProbabilidad(double probabilidad) {
 		this.probabilidad = probabilidad;
 	}
-	
 
 }
