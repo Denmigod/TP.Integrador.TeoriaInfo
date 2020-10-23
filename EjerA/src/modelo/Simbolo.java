@@ -23,7 +23,7 @@ public class Simbolo
 		double resultado = 0;
 		if (probabilidad > 0)
 		{
-			resultado = (Math.log(1 / probabilidad) / Math.log(base));
+			resultado = (-1 * Math.log(probabilidad) / Math.log(base));
 		}
 		return resultado;
 
