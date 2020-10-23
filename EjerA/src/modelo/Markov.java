@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import excepciones.DimensionInconsistenteException;
 import excepciones.ProbabilidadTotalException;
-import excepciones.SimboloNoEncontradoException;
+
 
 public class Markov extends Fuente
 {
@@ -13,7 +13,8 @@ public class Markov extends Fuente
 	private int base;
 	private double[] vectorEstacionario;
 
-	public Markov(double[][] matrizTransicion, ArrayList<String> simbolos) throws DimensionInconsistenteException
+	public Markov(double[][] matrizTransicion, ArrayList<String> simbolos, int base)
+			throws DimensionInconsistenteException
 	{
 		if (matrizTransicion.length != simbolos.size())
 		{
@@ -21,10 +22,10 @@ public class Markov extends Fuente
 					"La matriz de transicion no tiene la misma dimension que el vector de simbolos");
 		} else
 		{
-			this.base = simbolos.size();
+			this.base = base;
 			this.matrizTransicion = matrizTransicion;
 			this.simbolos = simbolos;
-			this.vectorEstacionario = new double[base];
+			this.vectorEstacionario = new double[simbolos.size()];
 			this.calcularVectorEstacionario();
 		}
 	}
@@ -32,13 +33,14 @@ public class Markov extends Fuente
 	private void calcularVectorEstacionario()
 	{
 		int iteraciones = 20; // se puede aumentar
-		double[][] matrizAux = new double[base][base];
+		int n = simbolos.size();
+		double[][] matrizAux = new double[n][n];
 		Matrices.copiaMatriz(matrizAux, this.matrizTransicion);
 		for (int i = 0; i < iteraciones; i++)
 		{
 			Matrices.multiplicarMatrices(matrizAux, matrizAux);
 		}
-		for (int i = 0; i < base; i++)
+		for (int i = 0; i < n; i++)
 		{
 			this.vectorEstacionario[i] = matrizAux[i][0];
 		}
@@ -49,17 +51,18 @@ public class Markov extends Fuente
 	public double getEntropia() throws ProbabilidadTotalException
 	{
 		double resultado = 0;
-
-		for (int i = 0; i < this.base; i++)
+		int n = simbolos.size();
+		
+		for (int i = 0; i < n; i++)
 		{
 			double acumulador = 0;
-			for (int j = 0; j < base; j++)
+			for (int j = 0; j < n; j++)
 			{
-				double probabilidad = this.matrizTransicion[i][j];
+				double probabilidad = this.matrizTransicion[j][i]; // recorre la matriz por columnas
 				double cantidadInformacion = 0;
 				if (probabilidad > 0)
 				{
-					cantidadInformacion = -1 * Math.log(probabilidad) / Math.log(base);
+					cantidadInformacion = -1 * Math.log(probabilidad) / Math.log(this.base);
 				}
 				acumulador += probabilidad * cantidadInformacion;
 			}
@@ -67,13 +70,6 @@ public class Markov extends Fuente
 		}
 
 		return resultado;
-	}
-
-	@Override
-	public double getCantInformacion(String simbolo) throws SimboloNoEncontradoException
-	{
-
-		return 0;
 	}
 
 	/**

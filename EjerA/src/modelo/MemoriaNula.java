@@ -12,12 +12,13 @@ public class MemoriaNula extends Fuente
 {
 	private HashMap<String, Simbolo> listaSimbolos = new HashMap<String, Simbolo>();
 	private GeneradorMemoriaNula generadorMemoriaNula = new GeneradorMemoriaNula();
-	private int base = 0;
+	private int cantidadSimbolos = 0;
+	private int base;
 	private double probabilidadAcumulada = 0;
 
-	public MemoriaNula()
+	public MemoriaNula(int base)
 	{
-
+		this.base = base;
 	}
 
 	public void addSimbolo(Simbolo simbolo) throws ProbabilidadTotalException
@@ -30,7 +31,7 @@ public class MemoriaNula extends Fuente
 			this.generadorMemoriaNula.addSimbolo(simbolo);
 			this.listaSimbolos.put(simbolo.getDato(), simbolo);
 			this.probabilidadAcumulada += simbolo.getProbabilidad();
-			this.base++;
+			this.cantidadSimbolos++;
 		}
 	}
 
@@ -66,14 +67,13 @@ public class MemoriaNula extends Fuente
 		return resultado;
 	}
 
-	@Override
 	public double getCantInformacion(String simbolo) throws SimboloNoEncontradoException
 	{
 
 		double resultado = 0;
 		if (this.listaSimbolos.containsKey(simbolo))
 		{
-			resultado = this.listaSimbolos.get(simbolo).getCantInformacion(this.base);
+			resultado = this.listaSimbolos.get(simbolo).getCantInformacion(base);
 		} else
 		{
 			throw new SimboloNoEncontradoException("El simbolo " + simbolo + " no se encontro");
