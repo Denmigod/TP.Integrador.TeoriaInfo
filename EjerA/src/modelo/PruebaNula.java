@@ -10,11 +10,13 @@ public class PruebaNula
 		MemoriaNula fuenteMemNula = new MemoriaNula(2);
 		try
 		{
-			fuenteMemNula.addSimbolo(new Simbolo("1", 0.1));
-			fuenteMemNula.addSimbolo(new Simbolo("01", 0.4));
-			fuenteMemNula.addSimbolo(new Simbolo("011", 0.5));
-			System.out.println(fuenteMemNula.getCantInformacion("01"));
+			fuenteMemNula.addSimbolo(new Simbolo("a", 0.1));
+			fuenteMemNula.addSimbolo(new Simbolo("b", 0.4));
+			fuenteMemNula.addSimbolo(new Simbolo("c", 0.5));
+			System.out.println(fuenteMemNula.getCantInformacion("b"));
 			System.out.println(fuenteMemNula.getEntropia());
+			
+			System.out.println(fuenteMemNula.generarSimbolos(10));
 		} catch (ProbabilidadTotalException e)
 		{
 			e.printStackTrace();

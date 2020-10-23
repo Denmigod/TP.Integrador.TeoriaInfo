@@ -81,7 +81,7 @@ public class MemoriaNula extends Fuente
 		return (resultado);
 	}
 
-	public String generarSimbolo() throws ProbabilidadTotalException
+	public String generarSimbolos(int n) throws ProbabilidadTotalException
 	{
 		String simbolo = "";
 		if (probabilidadAcumulada != 1)
@@ -89,7 +89,7 @@ public class MemoriaNula extends Fuente
 			throw new ProbabilidadTotalException("La probabilidad total de la fuente no es 1");
 		} else
 		{
-			simbolo = this.generadorMemoriaNula.generaSimbolo();
+			simbolo = this.generadorMemoriaNula.generaSimbolos(n);
 		}
 		return simbolo;
 	}

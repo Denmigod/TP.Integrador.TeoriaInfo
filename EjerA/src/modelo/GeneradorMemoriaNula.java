@@ -1,5 +1,7 @@
 package modelo;
 
+import java.util.Random;
+
 public class GeneradorMemoriaNula
 {
 	private String[] vectorSimbolos = new String[100]; // considero probabilidades con una presicion de 2 decimales
@@ -22,16 +24,25 @@ public class GeneradorMemoriaNula
 		{
 			this.vectorSimbolos[i + this.limiteVectorSimbolos] = simbolo.getDato();
 		}
-		this.limiteVectorSimbolos += (int) simbolo.getProbabilidad() * 100;
+		this.limiteVectorSimbolos += (int) (simbolo.getProbabilidad() * 100);
 	}
 
 	/**
 	 * Pre: la probabilidad acumulada debe ser 1, por lo que el vector simbolos debe
 	 * tener las 100 posiciones ocupadas
 	 */
-	public String generaSimbolo()
+	public String generaSimbolos(int n)
 	{
-		return this.vectorSimbolos[(int) (Math.random() % this.limiteVectorSimbolos + 1)];
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < n; i++)
+		{
+			Random randnum = new Random();
+			randnum.setSeed(System.nanoTime());
+			int numeroRandom = randnum.nextInt(this.limiteVectorSimbolos);
+			sb.append(this.vectorSimbolos[numeroRandom]);
+		}
+		return sb.toString();
 	}
 
 }
