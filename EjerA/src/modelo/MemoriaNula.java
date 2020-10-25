@@ -12,7 +12,6 @@ import excepciones.SimboloNoEncontradoException;
 public class MemoriaNula extends Fuente
 {
 	private HashMap<String, Simbolo> listaSimbolos = new HashMap<String, Simbolo>();
-	private int cantidadSimbolos = 0;
 	private int base;
 	private double probabilidadAcumulada = 0;
 
@@ -21,6 +20,13 @@ public class MemoriaNula extends Fuente
 		this.base = base;
 	}
 
+	/**
+	 * Esta funcion agrega un simbolo a la fuente de memoria nula
+	 * 
+	 * @param simbolo : simbolo o codigo(lo que se prefiera usar)
+	 * @throws ProbabilidadTotalException : se lanza cuando la probabilidad total va
+	 *                                    a superar a 1
+	 */
 	public void addSimbolo(Simbolo simbolo) throws ProbabilidadTotalException
 	{
 		if (probabilidadAcumulada + simbolo.getProbabilidad() > 1)
@@ -30,7 +36,6 @@ public class MemoriaNula extends Fuente
 		{
 			this.listaSimbolos.put(simbolo.getDato(), simbolo);
 			this.probabilidadAcumulada += simbolo.getProbabilidad();
-			this.cantidadSimbolos++;
 		}
 	}
 
