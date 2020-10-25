@@ -2,6 +2,7 @@ package modelo;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Set;
 import java.util.Map.Entry;
 
@@ -11,7 +12,6 @@ import excepciones.SimboloNoEncontradoException;
 public class MemoriaNula extends Fuente
 {
 	private HashMap<String, Simbolo> listaSimbolos = new HashMap<String, Simbolo>();
-	private GeneradorMemoriaNula generadorMemoriaNula = new GeneradorMemoriaNula();
 	private int cantidadSimbolos = 0;
 	private int base;
 	private double probabilidadAcumulada = 0;
@@ -28,7 +28,6 @@ public class MemoriaNula extends Fuente
 			throw new ProbabilidadTotalException("La probabilidad total supero el maximo de 1");
 		} else
 		{
-			this.generadorMemoriaNula.addSimbolo(simbolo);
 			this.listaSimbolos.put(simbolo.getDato(), simbolo);
 			this.probabilidadAcumulada += simbolo.getProbabilidad();
 			this.cantidadSimbolos++;
@@ -83,15 +82,36 @@ public class MemoriaNula extends Fuente
 
 	public String generarSimbolos(int n) throws ProbabilidadTotalException
 	{
-		String simbolo = "";
-		if (probabilidadAcumulada != 1)
+		StringBuilder sb = new StringBuilder();
+		Random randnum = new Random();
+		randnum.setSeed(System.nanoTime());
+
+		if (this.probabilidadAcumulada != 1)
 		{
 			throw new ProbabilidadTotalException("La probabilidad total de la fuente no es 1");
 		} else
 		{
-			simbolo = this.generadorMemoriaNula.generaSimbolos(n);
+			for (int i = 0; i < n; i++)
+			{
+				double numeroRandom = randnum.nextDouble();
+				double sumaProbabilidades;
+
+				Entry<String, Simbolo> entry;
+				Set<Entry<String, Simbolo>> entrySet = this.listaSimbolos.entrySet();
+				Iterator<Entry<String, Simbolo>> it = entrySet.iterator();
+				entry = it.next();
+				sumaProbabilidades = entry.getValue().getProbabilidad();
+
+				while (sumaProbabilidades <= numeroRandom)
+				{
+					entry = it.next();
+					sumaProbabilidades += entry.getValue().getProbabilidad();
+				}
+				sb.append(entry.getValue().getDato());
+			}
 		}
-		return simbolo;
+
+		return sb.toString();
 	}
 
 }
