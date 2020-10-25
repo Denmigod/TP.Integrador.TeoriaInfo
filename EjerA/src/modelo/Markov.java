@@ -1,10 +1,11 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import excepciones.DimensionInconsistenteException;
 import excepciones.ProbabilidadTotalException;
-
+import utilidades.Matrices;
 
 public class Markov extends Fuente
 {
@@ -12,6 +13,7 @@ public class Markov extends Fuente
 	private double[][] matrizTransicion;
 	private int base;
 	private double[] vectorEstacionario;
+	private String simboloAnterior = null;
 
 	public Markov(double[][] matrizTransicion, ArrayList<String> simbolos, int base)
 			throws DimensionInconsistenteException
@@ -52,7 +54,7 @@ public class Markov extends Fuente
 	{
 		double resultado = 0;
 		int n = simbolos.size();
-		
+
 		for (int i = 0; i < n; i++)
 		{
 			double acumulador = 0;
@@ -70,6 +72,36 @@ public class Markov extends Fuente
 		}
 
 		return resultado;
+	}
+
+	public String generaSimbolos(int n)
+	{
+		StringBuilder sb = new StringBuilder();
+		int columnaSimboloAnterior;
+		Random randnum = new Random();
+		randnum.setSeed(System.nanoTime());
+
+		if (simboloAnterior == null)
+		{
+			columnaSimboloAnterior = randnum.nextInt(this.simbolos.size());
+			this.simboloAnterior = this.simbolos.get(columnaSimboloAnterior);
+			sb.append(this.simboloAnterior);
+			n--;
+		}
+		for (int i = 0; i < n; i++)
+		{
+			columnaSimboloAnterior = this.simbolos.indexOf(simboloAnterior);
+			double numeroRandom = randnum.nextDouble();
+			double sumaProbabilidades = 0;
+			int j = -1;
+			while (sumaProbabilidades <= numeroRandom) {
+				sumaProbabilidades += this.matrizTransicion[j][columnaSimboloAnterior];
+				j++;
+			}
+			sb.append(this.simbolos.get(j));
+		}
+
+		return sb.toString();
 	}
 
 	/**
