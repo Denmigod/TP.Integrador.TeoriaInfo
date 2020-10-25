@@ -1,9 +1,10 @@
-package modelo;
+package pruebas;
 
 import java.util.ArrayList;
 
 import excepciones.DimensionInconsistenteException;
 import excepciones.ProbabilidadTotalException;
+import modelo.Markov;
 
 public class prueba
 {

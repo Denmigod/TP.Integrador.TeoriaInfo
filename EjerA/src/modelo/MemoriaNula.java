@@ -9,10 +9,16 @@ import java.util.Map.Entry;
 import excepciones.ProbabilidadTotalException;
 import excepciones.SimboloNoEncontradoException;
 
+/**
+ * Clase que contiene una fuente de memoria nula, genera secuencias de simbolos
+ * y devuelve los calculos correspondientes a la misma
+ * 
+ * @author Grupo 6
+ *
+ */
 public class MemoriaNula extends Fuente
 {
 	private HashMap<String, Simbolo> listaSimbolos = new HashMap<String, Simbolo>();
-	private int cantidadSimbolos = 0;
 	private int base;
 	private double probabilidadAcumulada = 0;
 
@@ -21,6 +27,13 @@ public class MemoriaNula extends Fuente
 		this.base = base;
 	}
 
+	/**
+	 * Esta funcion agrega un simbolo a la fuente de memoria nula
+	 * 
+	 * @param simbolo : simbolo o codigo(lo que se prefiera usar)
+	 * @throws ProbabilidadTotalException : se lanza cuando la probabilidad total va
+	 *                                    a superar a 1
+	 */
 	public void addSimbolo(Simbolo simbolo) throws ProbabilidadTotalException
 	{
 		if (probabilidadAcumulada + simbolo.getProbabilidad() > 1)
@@ -30,11 +43,11 @@ public class MemoriaNula extends Fuente
 		{
 			this.listaSimbolos.put(simbolo.getDato(), simbolo);
 			this.probabilidadAcumulada += simbolo.getProbabilidad();
-			this.cantidadSimbolos++;
 		}
 	}
 
 	/**
+	 * Metodo que devuelve la entropia de la fuente
 	 * 
 	 * @throws ProbabilidadTotalException : se lanza cuando la probabilidad total no
 	 *                                    es 1
@@ -66,6 +79,15 @@ public class MemoriaNula extends Fuente
 		return resultado;
 	}
 
+	/**
+	 * Metodo que devuelve la cantidad de informacion de un simbolo para la fuente
+	 * pasado por parametro
+	 * 
+	 * @param simbolo : simbolo a calcular la cantidad de informacion
+	 * @return : cantidad de infromacion del simbolo solicitado
+	 * @throws SimboloNoEncontradoException : cuando no se encuentra el simbolo
+	 *                                      solicitado
+	 */
 	public double getCantInformacion(String simbolo) throws SimboloNoEncontradoException
 	{
 
@@ -80,7 +102,16 @@ public class MemoriaNula extends Fuente
 		return (resultado);
 	}
 
-	public String generarSimbolos(int n) throws ProbabilidadTotalException
+	/**
+	 * metodo que genera una secuencia de simbolos a partir de la fuente y su
+	 * distribuciuon de probabilidades
+	 * 
+	 * @param cantidad : cantidad de simbolos a generar en la secuencia
+	 * @return : String con la secuencia de simbolos generada
+	 * @throws ProbabilidadTotalException : cuando la probabilidad acumulada no es 1
+	 *                                    para la fuente
+	 */
+	public String generarSimbolos(int cantidad) throws ProbabilidadTotalException
 	{
 		StringBuilder sb = new StringBuilder();
 		Random randnum = new Random();
@@ -91,7 +122,7 @@ public class MemoriaNula extends Fuente
 			throw new ProbabilidadTotalException("La probabilidad total de la fuente no es 1");
 		} else
 		{
-			for (int i = 0; i < n; i++)
+			for (int i = 0; i < cantidad; i++)
 			{
 				double numeroRandom = randnum.nextDouble();
 				double sumaProbabilidades;
@@ -112,6 +143,51 @@ public class MemoriaNula extends Fuente
 		}
 
 		return sb.toString();
+	}
+
+	/**
+	 * Metodo que enlista la cantidad de informacion de todos los simbolos de la
+	 * fuente
+	 * 
+	 * @return : la cantidad de informacion
+	 */
+	public String enlistaFuente()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("Simbolo" + "\t" + "cant.info" + "\t" + "codigo" + "\n");
+		Entry<String, Simbolo> entry;
+		Set<Entry<String, Simbolo>> entrySet = this.listaSimbolos.entrySet();
+		Iterator<Entry<String, Simbolo>> it = entrySet.iterator();
+		while (it.hasNext())
+		{
+			entry = it.next();
+			sb.append(
+					entry.getValue().getDato() + "\t" + String.format("%.5f", entry.getValue().getCantInformacion(base))
+							+ "\t" + "\t" + entry.getValue().getCodigo() + "\n");
+		}
+		return sb.toString();
+	}
+
+	public void generaCodigoInstantaneo()
+	{
+		Entry<String, Simbolo> entry;
+		Set<Entry<String, Simbolo>> entrySet = this.listaSimbolos.entrySet();
+		Iterator<Entry<String, Simbolo>> it = entrySet.iterator();
+		Simbolo[] simbolos = new Simbolo[this.listaSimbolos.size()];
+		int i = 0;
+		while (it.hasNext())
+		{
+			entry = it.next();
+			simbolos[i] = entry.getValue();
+			i++;
+		}
+		CodigoInstantaneo.generaCodigo(simbolos);
+		for (int j = 0; j < simbolos.length; j++)
+		{
+			this.listaSimbolos.get(simbolos[j].getDato()).setCodigo(simbolos[j].getCodigo());
+			;
+		}
+
 	}
 
 }

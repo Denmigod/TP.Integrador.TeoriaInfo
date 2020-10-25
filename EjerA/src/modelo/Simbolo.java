@@ -5,12 +5,21 @@ public class Simbolo
 
 	private String dato;
 	private double probabilidad;
+	private String codigo;
 
 	public Simbolo(String dato, double probabilidad)
 	{
 		super();
 		this.dato = dato;
 		this.probabilidad = probabilidad;
+	}
+
+	public Simbolo(String dato, double probabilidad, String codigo)
+	{
+		super();
+		this.dato = dato;
+		this.probabilidad = probabilidad;
+		this.codigo = codigo;
 	}
 
 	public String getDato()
@@ -37,6 +46,22 @@ public class Simbolo
 	public void setProbabilidad(double probabilidad)
 	{
 		this.probabilidad = probabilidad;
+	}
+
+	/**
+	 * @return the codigo
+	 */
+	public String getCodigo()
+	{
+		return codigo;
+	}
+
+	/**
+	 * @param codigo the codigo to set
+	 */
+	public void setCodigo(String codigo)
+	{
+		this.codigo = codigo;
 	}
 
 }
