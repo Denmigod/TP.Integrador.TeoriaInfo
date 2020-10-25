@@ -1,4 +1,4 @@
-package modelo;
+package pruebas;
 
 import excepciones.ProbabilidadTotalException;
 import excepciones.SimboloNoEncontradoException;
