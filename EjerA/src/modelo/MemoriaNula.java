@@ -119,4 +119,18 @@ public class MemoriaNula extends Fuente
 		return sb.toString();
 	}
 
+	public String listaCantidadInformacion()
+	{
+		StringBuilder sb = new StringBuilder();
+		Entry<String, Simbolo> entry;
+		Set<Entry<String, Simbolo>> entrySet = this.listaSimbolos.entrySet();
+		Iterator<Entry<String, Simbolo>> it = entrySet.iterator();
+		while (it.hasNext())
+		{
+			entry = it.next();
+			sb.append(entry.getValue().getDato() + "\t" + entry.getValue().getCantInformacion(base) + "\n");
+		}
+		return sb.toString();
+	}
+
 }
