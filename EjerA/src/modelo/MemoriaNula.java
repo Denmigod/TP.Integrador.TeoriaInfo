@@ -151,21 +151,43 @@ public class MemoriaNula extends Fuente
 	 * 
 	 * @return : la cantidad de informacion
 	 */
-	public String listaCantidadInformacion()
+	public String enlistaFuente()
 	{
 		StringBuilder sb = new StringBuilder();
+		sb.append("Simbolo" + "\t" + "cant.info" + "\t" + "codigo" + "\n");
 		Entry<String, Simbolo> entry;
 		Set<Entry<String, Simbolo>> entrySet = this.listaSimbolos.entrySet();
 		Iterator<Entry<String, Simbolo>> it = entrySet.iterator();
 		while (it.hasNext())
 		{
 			entry = it.next();
-			sb.append(entry.getValue().getDato() + "\t"
-					+ String.format("%.5f", entry.getValue().getCantInformacion(base)) + "\n");
+			sb.append(
+					entry.getValue().getDato() + "\t" + String.format("%.5f", entry.getValue().getCantInformacion(base))
+							+ "\t" + "\t" + entry.getValue().getCodigo() + "\n");
 		}
 		return sb.toString();
 	}
-	
-	
+
+	public void generaCodigoInstantaneo()
+	{
+		Entry<String, Simbolo> entry;
+		Set<Entry<String, Simbolo>> entrySet = this.listaSimbolos.entrySet();
+		Iterator<Entry<String, Simbolo>> it = entrySet.iterator();
+		Simbolo[] simbolos = new Simbolo[this.listaSimbolos.size()];
+		int i = 0;
+		while (it.hasNext())
+		{
+			entry = it.next();
+			simbolos[i] = entry.getValue();
+			i++;
+		}
+		CodigoInstantaneo.generaCodigo(simbolos);
+		for (int j = 0; j < simbolos.length; j++)
+		{
+			this.listaSimbolos.get(simbolos[j].getDato()).setCodigo(simbolos[j].getCodigo());
+			;
+		}
+
+	}
 
 }
