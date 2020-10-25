@@ -7,6 +7,14 @@ import excepciones.DimensionInconsistenteException;
 import excepciones.ProbabilidadTotalException;
 import utilidades.Matrices;
 
+/**
+ * Clase que simula una fuente de markov, puede generar una secuencia de datos a
+ * partir de la misma y realiza los calculos correspondientes a este tipo de
+ * fuente
+ * 
+ * @author Grupo 6
+ *
+ */
 public class Markov extends Fuente
 {
 	private ArrayList<String> simbolos = new ArrayList<String>();
@@ -15,6 +23,15 @@ public class Markov extends Fuente
 	private double[] vectorEstacionario;
 	private String simboloAnterior = null;
 
+	/**
+	 * Costructor del objeto markov
+	 * 
+	 * @param matrizTransicion : matriz de transicion de la fuente de markov
+	 * @param simbolos         : arraylist con los simbolos de la fuente
+	 * @param base             : base de la fuente
+	 * @throws DimensionInconsistenteException : cuando no coincide el tamaño del
+	 *                                         arraylist con el tamaño de la matriz
+	 */
 	public Markov(double[][] matrizTransicion, ArrayList<String> simbolos, int base)
 			throws DimensionInconsistenteException
 	{
@@ -32,6 +49,9 @@ public class Markov extends Fuente
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void calcularVectorEstacionario()
 	{
 		int iteraciones = 20; // se puede aumentar

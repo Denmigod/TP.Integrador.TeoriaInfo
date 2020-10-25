@@ -19,6 +19,8 @@ public class PruebaNula
 			System.out.println(fuenteMemNula.getEntropia());
 
 			System.out.println(fuenteMemNula.generarSimbolos(10));
+
+			System.out.println("\n" + fuenteMemNula.listaCantidadInformacion());
 		} catch (ProbabilidadTotalException e)
 		{
 			e.printStackTrace();

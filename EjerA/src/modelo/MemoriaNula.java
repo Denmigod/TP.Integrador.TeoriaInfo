@@ -9,6 +9,13 @@ import java.util.Map.Entry;
 import excepciones.ProbabilidadTotalException;
 import excepciones.SimboloNoEncontradoException;
 
+/**
+ * Clase que contiene una fuente de memoria nula, genera secuencias de simbolos
+ * y devuelve los calculos correspondientes a la misma
+ * 
+ * @author Grupo 6
+ *
+ */
 public class MemoriaNula extends Fuente
 {
 	private HashMap<String, Simbolo> listaSimbolos = new HashMap<String, Simbolo>();
@@ -40,6 +47,7 @@ public class MemoriaNula extends Fuente
 	}
 
 	/**
+	 * Metodo que devuelve la entropia de la fuente
 	 * 
 	 * @throws ProbabilidadTotalException : se lanza cuando la probabilidad total no
 	 *                                    es 1
@@ -71,6 +79,15 @@ public class MemoriaNula extends Fuente
 		return resultado;
 	}
 
+	/**
+	 * Metodo que devuelve la cantidad de informacion de un simbolo para la fuente
+	 * pasado por parametro
+	 * 
+	 * @param simbolo : simbolo a calcular la cantidad de informacion
+	 * @return : cantidad de infromacion del simbolo solicitado
+	 * @throws SimboloNoEncontradoException : cuando no se encuentra el simbolo
+	 *                                      solicitado
+	 */
 	public double getCantInformacion(String simbolo) throws SimboloNoEncontradoException
 	{
 
@@ -85,7 +102,16 @@ public class MemoriaNula extends Fuente
 		return (resultado);
 	}
 
-	public String generarSimbolos(int n) throws ProbabilidadTotalException
+	/**
+	 * metodo que genera una secuencia de simbolos a partir de la fuente y su
+	 * distribuciuon de probabilidades
+	 * 
+	 * @param cantidad : cantidad de simbolos a generar en la secuencia
+	 * @return : String con la secuencia de simbolos generada
+	 * @throws ProbabilidadTotalException : cuando la probabilidad acumulada no es 1
+	 *                                    para la fuente
+	 */
+	public String generarSimbolos(int cantidad) throws ProbabilidadTotalException
 	{
 		StringBuilder sb = new StringBuilder();
 		Random randnum = new Random();
@@ -96,7 +122,7 @@ public class MemoriaNula extends Fuente
 			throw new ProbabilidadTotalException("La probabilidad total de la fuente no es 1");
 		} else
 		{
-			for (int i = 0; i < n; i++)
+			for (int i = 0; i < cantidad; i++)
 			{
 				double numeroRandom = randnum.nextDouble();
 				double sumaProbabilidades;
@@ -119,6 +145,12 @@ public class MemoriaNula extends Fuente
 		return sb.toString();
 	}
 
+	/**
+	 * Metodo que enlista la cantidad de informacion de todos los simbolos de la
+	 * fuente
+	 * 
+	 * @return : la cantidad de informacion
+	 */
 	public String listaCantidadInformacion()
 	{
 		StringBuilder sb = new StringBuilder();
@@ -128,9 +160,12 @@ public class MemoriaNula extends Fuente
 		while (it.hasNext())
 		{
 			entry = it.next();
-			sb.append(entry.getValue().getDato() + "\t" + entry.getValue().getCantInformacion(base) + "\n");
+			sb.append(entry.getValue().getDato() + "\t"
+					+ String.format("%.5f", entry.getValue().getCantInformacion(base)) + "\n");
 		}
 		return sb.toString();
 	}
+	
+	
 
 }
