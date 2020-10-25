@@ -2,6 +2,8 @@ package pruebas;
 
 import excepciones.ProbabilidadTotalException;
 import excepciones.SimboloNoEncontradoException;
+import modelo.MemoriaNula;
+import modelo.Simbolo;
 
 public class PruebaNula
 {
