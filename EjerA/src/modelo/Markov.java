@@ -74,7 +74,7 @@ public class Markov extends Fuente
 		return resultado;
 	}
 
-	public String generaSimbolos(int n)
+	public String generarSimbolos(int n)
 	{
 		StringBuilder sb = new StringBuilder();
 		int columnaSimboloAnterior;
@@ -94,7 +94,8 @@ public class Markov extends Fuente
 			double numeroRandom = randnum.nextDouble();
 			double sumaProbabilidades = 0;
 			int j = -1;
-			while (sumaProbabilidades <= numeroRandom) {
+			while (sumaProbabilidades <= numeroRandom)
+			{
 				sumaProbabilidades += this.matrizTransicion[j][columnaSimboloAnterior];
 				j++;
 			}

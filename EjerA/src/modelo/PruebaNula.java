@@ -15,7 +15,7 @@ public class PruebaNula
 			fuenteMemNula.addSimbolo(new Simbolo("c", 0.5));
 			System.out.println(fuenteMemNula.getCantInformacion("b"));
 			System.out.println(fuenteMemNula.getEntropia());
-			
+
 			System.out.println(fuenteMemNula.generarSimbolos(10));
 		} catch (ProbabilidadTotalException e)
 		{
