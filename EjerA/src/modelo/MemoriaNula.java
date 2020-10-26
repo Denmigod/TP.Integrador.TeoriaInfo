@@ -6,6 +6,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import excepciones.CodigoInexistenteException;
 import excepciones.ProbabilidadTotalException;
 import excepciones.SimboloNoEncontradoException;
 
@@ -111,7 +112,7 @@ public class MemoriaNula extends Fuente
 	 * @throws ProbabilidadTotalException : cuando la probabilidad acumulada no es 1
 	 *                                    para la fuente
 	 */
-	public String generarSimbolos(int cantidad) throws ProbabilidadTotalException
+	public String generarSecuenciaSimbolos(int cantidad) throws ProbabilidadTotalException
 	{
 		StringBuilder sb = new StringBuilder();
 		Random randnum = new Random();
@@ -145,6 +146,43 @@ public class MemoriaNula extends Fuente
 		return sb.toString();
 	}
 
+	public String generarSecuenciaCodigos(int cantidad) throws ProbabilidadTotalException, CodigoInexistenteException
+	{
+		StringBuilder sb = new StringBuilder();
+		Random randnum = new Random();
+		randnum.setSeed(System.nanoTime());
+
+		if (this.probabilidadAcumulada != 1)
+		{
+			throw new ProbabilidadTotalException("La probabilidad total de la fuente no es 1");
+		} else if (!this.isCodificada()) // pregunto si no existe codigo en los simbolos
+		{
+			throw new CodigoInexistenteException("la fuente no tiene codificacion asociada a los simbolos");
+		}
+		{
+			for (int i = 0; i < cantidad; i++)
+			{
+				double numeroRandom = randnum.nextDouble();
+				double sumaProbabilidades;
+
+				Entry<String, Simbolo> entry;
+				Set<Entry<String, Simbolo>> entrySet = this.listaSimbolos.entrySet();
+				Iterator<Entry<String, Simbolo>> it = entrySet.iterator();
+				entry = it.next();
+				sumaProbabilidades = entry.getValue().getProbabilidad();
+
+				while (sumaProbabilidades <= numeroRandom)
+				{
+					entry = it.next();
+					sumaProbabilidades += entry.getValue().getProbabilidad();
+				}
+				sb.append(entry.getValue().getCodigo());
+			}
+		}
+
+		return sb.toString();
+	}
+
 	/**
 	 * Metodo que enlista la cantidad de informacion de todos los simbolos de la
 	 * fuente
@@ -168,8 +206,12 @@ public class MemoriaNula extends Fuente
 		return sb.toString();
 	}
 
-	public void generaCodigoInstantaneo()
+	public void generaCodigoInstantaneo() throws ProbabilidadTotalException
 	{
+		if (this.probabilidadAcumulada != 1)
+		{
+			throw new ProbabilidadTotalException("La probabilidad total de la fuente no es 1");
+		}
 		Entry<String, Simbolo> entry;
 		Set<Entry<String, Simbolo>> entrySet = this.listaSimbolos.entrySet();
 		Iterator<Entry<String, Simbolo>> it = entrySet.iterator();
@@ -188,6 +230,62 @@ public class MemoriaNula extends Fuente
 			;
 		}
 
+	}
+
+	public boolean isCodificada()
+	{
+		return this.listaSimbolos.entrySet().iterator().hasNext()
+				&& this.listaSimbolos.entrySet().iterator().next().getValue().getCodigo() != null;// verifico si los
+																									// simbolos tienen
+																									// codificacion
+	}
+
+	public boolean verificaInecuacionKraft() throws ProbabilidadTotalException, CodigoInexistenteException
+	{
+		return this.sumatoriaInecuacionKraft() <= 1;
+	}
+
+	public double sumatoriaInecuacionKraft() throws ProbabilidadTotalException, CodigoInexistenteException
+	{
+		if (probabilidadAcumulada != 1)
+		{
+			throw new ProbabilidadTotalException("La probabilidad total de la fuente no es 1");
+		} else if (!this.isCodificada())
+		{
+			throw new CodigoInexistenteException("la fuente no tiene codificacion asociada a los simbolos");
+		}
+		Entry<String, Simbolo> entry;
+		Set<Entry<String, Simbolo>> entrySet = this.listaSimbolos.entrySet();
+		Iterator<Entry<String, Simbolo>> it = entrySet.iterator();
+		double sumatoria = 0;
+		while (it.hasNext())
+		{
+			entry = it.next();
+			sumatoria += Math.pow(base, -1 * entry.getValue().getCodigo().length());
+		}
+		return sumatoria;
+	}
+
+	public double longitudMediaCodigo() throws ProbabilidadTotalException, CodigoInexistenteException
+	{
+		if (probabilidadAcumulada != 1)
+		{
+			throw new ProbabilidadTotalException("La probabilidad total de la fuente no es 1");
+		} else if (!this.isCodificada())
+		{
+			throw new CodigoInexistenteException("la fuente no tiene codificacion asociada a los simbolos");
+		}
+		Entry<String, Simbolo> entry;
+		Set<Entry<String, Simbolo>> entrySet = this.listaSimbolos.entrySet();
+		Iterator<Entry<String, Simbolo>> it = entrySet.iterator();
+		double sumatoria = 0;
+		while (it.hasNext())
+		{
+			entry = it.next();
+			sumatoria += entry.getValue().getProbabilidad() * entry.getValue().getCodigo().length();
+		}
+
+		return sumatoria;
 	}
 
 }

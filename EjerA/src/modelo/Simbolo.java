@@ -5,7 +5,7 @@ public class Simbolo
 
 	private String dato;
 	private double probabilidad;
-	private String codigo;
+	private String codigo = null;
 
 	public Simbolo(String dato, double probabilidad)
 	{
