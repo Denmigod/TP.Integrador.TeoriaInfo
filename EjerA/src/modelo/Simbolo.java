@@ -1,5 +1,9 @@
 package modelo;
 
+/**
+ * @author Grupo 6
+ *Representa un simbolo para una fuente
+ */
 public class Simbolo
 {
 
@@ -27,6 +31,11 @@ public class Simbolo
 		return dato;
 	}
 
+	/**
+	 * Se encarga de calcular y devolver la cantidad de informacion
+	 * @param base : la base de la fuente
+	 * @return devuelve la cantidad de informacion
+	 */
 	public double getCantInformacion(int base)
 	{
 		double resultado = 0;

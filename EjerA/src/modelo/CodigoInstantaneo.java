@@ -1,14 +1,24 @@
 package modelo;
 
+/**
+ * @author Grupo 6
+ * Se encarga de generar un codigo instantaneo
+ *
+ */
 public abstract class CodigoInstantaneo
 {
 
+	/**
+	 * genera un codigo instantaneo dado un vector de simbolos de una fuente de memoria nula binaria
+	 * @param simbolos : vector de simbolos
+	 */
 	public static void generaCodigo(Simbolo[] simbolos)
 	{
 		int cantidadSimbolos = simbolos.length;
 		CodigoInstantaneo.completaVectores(simbolos, cantidadSimbolos);
 	}
 
+	
 	private static void completaVectores(Simbolo[] simbolos, int cantidadSimbolos)
 	{
 		CodigoInstantaneo.BubbleSort(simbolos);
