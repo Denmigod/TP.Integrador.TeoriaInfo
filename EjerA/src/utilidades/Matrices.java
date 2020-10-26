@@ -1,16 +1,18 @@
 package utilidades;
 
+/**
+ * @author Grupo 6
+ *Se encarga de hacer operaciones con matrices
+ */
 public abstract class Matrices
 {
 
-	/*
-	 * public static double[][] copiaMatriz(double[][] matriz) { double[][]
-	 * matrizAux = new double[matriz.length][matriz[0].length];
-	 * 
-	 * for (int i = 0; i < matriz.length; i++) { for (int j = 0; j <
-	 * matriz[0].length; j++) { matrizAux[i][j] = matriz[i][j]; } }
-	 * 
-	 * return matrizAux; }
+
+	/**
+	 * Se encarga de multiplicar dos matrices
+	 * multiplica la primera por la segunda guardandola en la primera
+	 * @param mat1
+	 * @param mat2
 	 */
 	public static void multiplicarMatrices(double mat1[][], double mat2[][])
 	{
@@ -29,6 +31,12 @@ public abstract class Matrices
 		Matrices.copiaMatriz(mat1, matAux);
 	}
 
+	/**
+	 * Se encarga de copiar matriz
+	 * copia la matriz 2 en la matriz 1
+	 * @param mat1
+	 * @param mat2
+	 */
 	public static void copiaMatriz(double mat1[][], double mat2[][])
 	{
 		for (int i = 0; i < mat1.length; i++)
@@ -40,6 +48,10 @@ public abstract class Matrices
 		}
 	}
 	
+	/**
+	 * Se encarga de mostrar la matriz
+	 * @param mat
+	 */
 	static void muestramatriz(double[][] mat)
 	{
 		for (int x = 0; x < mat.length; x++)

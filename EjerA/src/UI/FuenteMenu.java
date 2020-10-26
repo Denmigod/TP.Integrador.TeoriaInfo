@@ -7,13 +7,17 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
 
-public class FuenteMenu extends JFrame
+public class FuenteMenu extends JFrame implements KeyListener
 {
 
 	private JFrame frame;
@@ -43,6 +47,7 @@ public class FuenteMenu extends JFrame
 	private JRadioButton rdbtnMarkov;
 	private JButton btnAtrasMenu;
 	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private ActionListener actionListener;
 
 	/**
 	 * Create the frame.
@@ -103,6 +108,7 @@ public class FuenteMenu extends JFrame
 		this.panel_7.add(this.panel_12);
 
 		this.textField_CantSimbolos = new JTextField();
+		this.textField_CantSimbolos.addKeyListener(this);
 		this.panel_12.add(this.textField_CantSimbolos);
 		this.textField_CantSimbolos.setColumns(10);
 
@@ -120,6 +126,7 @@ public class FuenteMenu extends JFrame
 		this.panel_8.add(this.panel_10);
 
 		this.textField_Base = new JTextField();
+		this.textField_Base.addKeyListener(this);
 		this.panel_10.add(this.textField_Base);
 		this.textField_Base.setColumns(10);
 
@@ -130,9 +137,12 @@ public class FuenteMenu extends JFrame
 		this.panel_1.add(this.panel_9);
 
 		this.btnAtrasMenu = new JButton("Atras");
+		this.btnAtrasMenu.setActionCommand("atras");
 		this.panel_9.add(this.btnAtrasMenu);
 
 		this.btnCrear = new JButton("Crear");
+		this.btnCrear.setActionCommand("crear");
+		this.btnCrear.setEnabled(false);
 		this.panel_9.add(this.btnCrear);
 
 		this.panel_2 = new JPanel();
@@ -153,6 +163,52 @@ public class FuenteMenu extends JFrame
 		}
 		return tipoFuente;
 	}
+
+	public int getCantidadSimbolos()
+	{
+
+		return Integer.parseInt(this.textField_CantSimbolos.getText());
+	}
+
+	public int getBase()
+	{
+		return Integer.parseInt(this.textField_Base.getText());
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0)
+	{
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0)
+	{
+		int base = 0;
+		int cantSimbolos = 0;
+		try
+		{
+			base = Integer.parseInt(this.textField_Base.getText());
+			cantSimbolos = Integer.parseInt(this.textField_CantSimbolos.getText());
+		} catch (NumberFormatException e)
+		{
+		}
+
+		boolean condicion = base > 0 && cantSimbolos > 0;
+		this.btnCrear.setEnabled(condicion);
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0)
+	{
+
+	}
 	
+	public void setActionListener(ActionListener actionListener) {
+		this.btnAtrasMenu.addActionListener(actionListener);
+		this.btnCrear.addActionListener(actionListener);
+		this.actionListener = actionListener;
+	}
 
 }
