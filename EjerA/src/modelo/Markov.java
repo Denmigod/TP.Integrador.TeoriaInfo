@@ -94,6 +94,10 @@ public class Markov extends Fuente
 		return resultado;
 	}
 
+	/**
+	 * @param n : cantidad
+	 * @return devuelve el simbolo que es string
+	 */
 	public String generarSimbolos(int n)
 	{
 		StringBuilder sb = new StringBuilder();
