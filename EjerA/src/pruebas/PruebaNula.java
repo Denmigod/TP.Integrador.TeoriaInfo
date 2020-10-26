@@ -13,11 +13,9 @@ public class PruebaNula
 		MemoriaNula fuenteMemNula = new MemoriaNula(2);
 		try
 		{
-			fuenteMemNula.addSimbolo(new Simbolo("a", 0.1));
+			fuenteMemNula.addSimbolo(new Simbolo("a", 0.125));
 			fuenteMemNula.addSimbolo(new Simbolo("b", 0.5));
-			fuenteMemNula.addSimbolo(new Simbolo("c", 0.2));
-			fuenteMemNula.addSimbolo(new Simbolo("d", 0.05));
-			fuenteMemNula.addSimbolo(new Simbolo("e", 0.15));
+			fuenteMemNula.addSimbolo(new Simbolo("c", 0.375));
 
 			System.out.println(fuenteMemNula.getCantInformacion("b"));
 			System.out.println(fuenteMemNula.getEntropia());
@@ -31,6 +29,7 @@ public class PruebaNula
 					.println(fuenteMemNula.verificaInecuacionKraft() + " " + fuenteMemNula.sumatoriaInecuacionKraft());
 			System.out.println(fuenteMemNula.generarSecuenciaCodigos(10));
 			System.out.println(fuenteMemNula.longitudMediaCodigo());
+			System.out.println(fuenteMemNula.isCompacto());
 		} catch (ProbabilidadTotalException e)
 		{
 			e.printStackTrace();
@@ -39,7 +38,6 @@ public class PruebaNula
 			e.printStackTrace();
 		} catch (CodigoInexistenteException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

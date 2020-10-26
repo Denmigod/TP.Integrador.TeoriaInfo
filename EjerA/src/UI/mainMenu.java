@@ -17,7 +17,6 @@ public class mainMenu extends JFrame {
 	private JPanel panel_2;
 	private JPanel panel_3;
 	private JPanel panel_4;
-	private JButton btnNewButton;
 	private JButton btnFuente;
 
 	/**
@@ -62,9 +61,6 @@ public class mainMenu extends JFrame {
 		
 		this.panel_4 = new JPanel();
 		this.panel.add(this.panel_4);
-		
-		this.btnNewButton = new JButton("Generar C\u00F3digo Instant\u00E1neo");
-		this.panel_4.add(this.btnNewButton);
 		
 		this.panel_1 = new JPanel();
 		this.panel.add(this.panel_1);

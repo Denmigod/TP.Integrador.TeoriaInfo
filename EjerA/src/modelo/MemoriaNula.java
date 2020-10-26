@@ -288,4 +288,27 @@ public class MemoriaNula extends Fuente
 		return sumatoria;
 	}
 
+	public boolean isCompacto() throws ProbabilidadTotalException, CodigoInexistenteException
+	{
+
+		if (probabilidadAcumulada != 1)
+		{
+			throw new ProbabilidadTotalException("La probabilidad total de la fuente no es 1");
+		} else if (!this.isCodificada())
+		{
+			throw new CodigoInexistenteException("la fuente no tiene codificacion asociada a los simbolos");
+		}
+		Entry<String, Simbolo> entry;
+		Set<Entry<String, Simbolo>> entrySet = this.listaSimbolos.entrySet();
+		Iterator<Entry<String, Simbolo>> it = entrySet.iterator();
+		boolean compacto = true;
+		while (it.hasNext() && compacto)
+		{
+			entry = it.next();
+			compacto = Math
+					.ceil(entry.getValue().getCantInformacion(base)) == (double) entry.getValue().getCodigo().length();
+		}
+		return compacto;
+	}
+
 }
