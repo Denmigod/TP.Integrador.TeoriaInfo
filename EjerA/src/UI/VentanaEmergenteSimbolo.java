@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.JButton;
 
-public class VentanaEmergenteProbabilidad extends JFrame implements KeyListener {
+public class VentanaEmergenteSimbolo extends JFrame implements KeyListener {
 
 	private JPanel contentPane;
 	private JPanel panel;
@@ -24,7 +24,7 @@ public class VentanaEmergenteProbabilidad extends JFrame implements KeyListener 
 	private JPanel panel_4;
 	private JPanel panel_5;
 	private JLabel lblNewLabel;
-	private JTextField textFieldProbabilidad;
+	private JTextField textFieldSimbolo;
 	private JButton btnAceptar;
 	private JFrame frame;
 	private ActionListener actionListener;
@@ -32,7 +32,7 @@ public class VentanaEmergenteProbabilidad extends JFrame implements KeyListener 
 	/**
 	 * Create the frame.
 	 */
-	public VentanaEmergenteProbabilidad() {
+	public VentanaEmergenteSimbolo() {
 		this.frame = new JFrame("Ingrese probabilidad");
 		this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.frame.setBounds(100, 100, 450, 300);
@@ -47,16 +47,16 @@ public class VentanaEmergenteProbabilidad extends JFrame implements KeyListener 
 		this.panel_2 = new JPanel();
 		this.contentPane.add(this.panel_2);
 
-		this.lblNewLabel = new JLabel("Ingrese Probabilidad fila: 1 columna: 1");
+		this.lblNewLabel = new JLabel("Ingrese el simbolo nro: 1");
 		this.panel_2.add(this.lblNewLabel);
 
 		this.panel_3 = new JPanel();
 		this.contentPane.add(this.panel_3);
 
-		this.textFieldProbabilidad = new JTextField();
-		this.textFieldProbabilidad.addKeyListener(this);
-		this.panel_3.add(this.textFieldProbabilidad);
-		this.textFieldProbabilidad.setColumns(10);
+		this.textFieldSimbolo = new JTextField();
+		this.textFieldSimbolo.addKeyListener(this);
+		this.panel_3.add(this.textFieldSimbolo);
+		this.textFieldSimbolo.setColumns(10);
 
 		this.panel_4 = new JPanel();
 		this.contentPane.add(this.panel_4);
@@ -65,7 +65,7 @@ public class VentanaEmergenteProbabilidad extends JFrame implements KeyListener 
 		this.contentPane.add(this.panel_5);
 
 		this.btnAceptar = new JButton("Aceptar");
-		this.btnAceptar.setActionCommand("AceptarProbabilidad");
+		this.btnAceptar.setActionCommand("AceptarSimbolo");
 		this.btnAceptar.setEnabled(false);
 		this.panel_5.add(this.btnAceptar);
 
@@ -79,13 +79,8 @@ public class VentanaEmergenteProbabilidad extends JFrame implements KeyListener 
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		double probabilidad = 0;
-		try {
-			probabilidad = Double.parseDouble(this.textFieldProbabilidad.getText());
-		} catch (NumberFormatException e) {
-		}
-		boolean condicion = probabilidad >= 0 && probabilidad <= 1;
-		this.btnAceptar.setEnabled(condicion);
+
+		this.btnAceptar.setEnabled(!this.textFieldSimbolo.getText().isEmpty());
 
 	}
 
@@ -96,13 +91,13 @@ public class VentanaEmergenteProbabilidad extends JFrame implements KeyListener 
 		this.frame.dispose();
 	}
 
-	public void setLabelProbabilidad(int fila, int columna) {
-		this.textFieldProbabilidad.setText("");
-		this.lblNewLabel.setText("Ingrese Probabilidad fila: " + fila + " columna: " + columna);
+	public void setLabelSimbolo(int nroSimbolo) {
+		this.textFieldSimbolo.setText("");
+		this.lblNewLabel.setText("Ingrese el simbolo nro: " + nroSimbolo);
 	}
 
-	public double getProbabilidad() {
-		return Double.parseDouble(this.textFieldProbabilidad.getText());
+	public String getSimbolo() {
+		return this.textFieldSimbolo.getText();
 	}
 
 	public void setActionListener(ActionListener actionListener) {
