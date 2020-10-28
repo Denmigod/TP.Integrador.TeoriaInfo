@@ -177,10 +177,11 @@ public class ControladorNula implements ActionListener
 			{
 				fuente.addSimbolo(new Simbolo(simbolos[i], probabilidades[i]));
 			}
-			this.ventanaEmergente.cerrar();
+
 			this.ventana = new NulaMenu();
 			this.ventana.setActionListener(this);
 			this.inicializaVentanaMemoriaNula();
+			this.ventanaEmergente.cerrar();
 		} catch (ProbabilidadTotalException e)
 		{
 			this.ventanaEmergente.imprimeMensaje(e.getMessage());

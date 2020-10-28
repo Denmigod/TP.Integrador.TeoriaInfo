@@ -21,8 +21,10 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.JTextPane;
+import java.awt.event.ActionEvent;
 
-public class MarkovMenu extends JFrame {
+public class MarkovMenu extends JFrame
+{
 
 	private JFrame frame;
 	private JPanel contentPane;
@@ -42,7 +44,8 @@ public class MarkovMenu extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public MarkovMenu() {
+	public MarkovMenu()
+	{
 		this.frame = new JFrame("Markov");
 		this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.frame.setBounds(100, 100, 585, 411);
@@ -86,6 +89,7 @@ public class MarkovMenu extends JFrame {
 		this.panel.add(this.panel_2);
 
 		this.btnNewButton = new JButton("Salir");
+		this.btnNewButton.setActionCommand("Salir");
 		this.panel_2.add(this.btnNewButton);
 		this.frame.setVisible(true);
 	}
@@ -96,19 +100,33 @@ public class MarkovMenu extends JFrame {
 	 * 
 	 * @param mensaje : mensaje a imprimir
 	 */
-	public void imprimeMensaje(String mensaje) {
+	public void imprimeMensaje(String mensaje)
+	{
 		JOptionPane.showMessageDialog(this, mensaje);
 	}
 
-	public void setTextPane(String text) {
+	public void setTextPane(String text)
+	{
 		this.textPane.setText(text);
 	}
 
-	public void cerrar() {
-		this.dispose();
+	public void setEntropia(double entropia)
+	{
+		this.lblEntropia.setText("Entropia: " + String.format("%.5f", entropia));
 	}
 
-	public void setActionListener(ActionListener actionListener) {
+	public void setVectorEstacionario(String vectorEstacinario)
+	{
+		this.lblVectorEst.setText("Vector estacionario:\n" + vectorEstacinario);
+	}
+
+	public void cerrar()
+	{
+		this.frame.dispose();
+	}
+
+	public void setActionListener(ActionListener actionListener)
+	{
 
 		this.btnNewButton.addActionListener(actionListener);
 		this.actionListener = actionListener;

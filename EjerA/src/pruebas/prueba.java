@@ -31,16 +31,12 @@ public class prueba
 
 		try
 		{
-			Markov fuenteMarkov = new Markov(mat, simbolos,2);
+			Markov fuenteMarkov = new Markov(mat, simbolos, 2);
 			System.out.println(fuenteMarkov.getEntropia());
 
-			
 			System.out.println(fuenteMarkov.getVectorEstacionario()[0] + " " + fuenteMarkov.getVectorEstacionario()[1]
 					+ " " + fuenteMarkov.getVectorEstacionario()[2]);
 		} catch (DimensionInconsistenteException e)
-		{
-			e.printStackTrace();
-		} catch (ProbabilidadTotalException e)
 		{
 			e.printStackTrace();
 		}
