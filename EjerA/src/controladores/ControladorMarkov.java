@@ -7,11 +7,8 @@ import java.util.Iterator;
 
 import UI.MarkovMenu;
 import UI.VentanaEmergenteMatrizTransicion;
-import UI.VentanaEmergenteProbabilidad;
-import UI.VentanaEmergenteSimbolo;
 import UI.VentanaEmergenteSimbolos;
 import excepciones.DimensionInconsistenteException;
-import excepciones.ProbabilidadTotalException;
 import modelo.Markov;
 import utilidades.Matrices;
 
