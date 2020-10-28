@@ -7,7 +7,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 import java.awt.Color;
@@ -17,159 +20,98 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import javax.swing.JTextPane;
 
-public class MarkovMenu extends JFrame
-{
+public class MarkovMenu extends JFrame {
 
 	private JFrame frame;
 	private JPanel contentPane;
 	private JPanel panel;
 	private JPanel panel_1;
+	private JScrollPane scrollPane;
+	private JTextPane textPane;
+	private JPanel panel_2;
 	private JPanel panel_3;
 	private JPanel panel_4;
 	private JPanel panel_5;
-	private JPanel panel_6;
-	private JPanel panel_7;
-	private JPanel panel_8;
-	private JPanel panel_9;
-	private JPanel panel_10;
-	private JPanel panel_11;
-	private JPanel panel_12;
-	private JPanel panel_13;
-	private JPanel panel_14;
-	private JPanel panel_15;
-	private JLabel lblNewLabel;
-	private JTextField textField_Simbolo;
-	private JLabel lblNewLabel_1;
-	private JTextField textField_Prob;
-	private JButton btnAgrega;
-	private JButton btnSalir;
-	private JPanel panel_2;
-	private JScrollPane scrollPane_1;
-	private JList listMuestra;
-	private JPanel panel_16;
-	private JPanel panel_17;
-	private JPanel panel_18;
-	private JPanel panel_19;
-	private JPanel panel_20;
+	private JButton btnNewButton;
+	private JLabel lblVectorEst;
 	private JLabel lblEntropia;
-	private JLabel lblNewLabel_2;
+	private ActionListener actionListener;
 
 	/**
 	 * Create the frame.
 	 */
-	public MarkovMenu()
-	{
+	public MarkovMenu() {
 		this.frame = new JFrame("Markov");
 		this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.frame.setBounds(100, 100, 900, 500);
+		this.frame.setBounds(100, 100, 585, 411);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.frame.setContentPane(this.contentPane);
-		this.contentPane.setLayout(new GridLayout(0, 2, 0, 0));
+		this.contentPane.setLayout(new GridLayout(2, 1, 0, 0));
+
+		this.panel_1 = new JPanel();
+		this.panel_1.setBorder(new TitledBorder(new LineBorder(new Color(255, 200, 0), 2, true), "",
+				TitledBorder.LEADING, TitledBorder.TOP, null, Color.ORANGE));
+		this.contentPane.add(this.panel_1);
+		this.panel_1.setLayout(new BorderLayout(0, 0));
+
+		this.scrollPane = new JScrollPane();
+		this.panel_1.add(this.scrollPane, BorderLayout.CENTER);
+
+		this.textPane = new JTextPane();
+		this.scrollPane.setViewportView(this.textPane);
 
 		this.panel = new JPanel();
 		this.contentPane.add(this.panel);
-		this.panel.setLayout(new GridLayout(12, 0, 0, 0));
+		this.panel.setLayout(new GridLayout(4, 0, 0, 0));
 
-		this.panel_5 = new JPanel();
-		this.panel.add(this.panel_5);
+		this.panel_3 = new JPanel();
+		this.panel.add(this.panel_3);
 
-		this.panel_6 = new JPanel();
-		this.panel.add(this.panel_6);
-
-		this.lblNewLabel = new JLabel("Ingrese Simbolo*");
-		this.panel_6.add(this.lblNewLabel);
-
-		this.panel_7 = new JPanel();
-		this.panel.add(this.panel_7);
-
-		this.textField_Simbolo = new JTextField();
-		this.panel_7.add(this.textField_Simbolo);
-		this.textField_Simbolo.setColumns(10);
-
-		this.panel_8 = new JPanel();
-		this.panel.add(this.panel_8);
-
-		this.panel_9 = new JPanel();
-		this.panel.add(this.panel_9);
-
-		this.lblNewLabel_1 = new JLabel("Ingrese Probabilidad Pos i,j*");
-		this.panel_9.add(this.lblNewLabel_1);
-
-		this.panel_10 = new JPanel();
-		this.panel.add(this.panel_10);
-
-		this.textField_Prob = new JTextField();
-		this.panel_10.add(this.textField_Prob);
-		this.textField_Prob.setColumns(10);
-
-		this.panel_11 = new JPanel();
-		this.panel.add(this.panel_11);
-
-		this.panel_12 = new JPanel();
-		this.panel.add(this.panel_12);
-
-		this.btnAgrega = new JButton("Agregar");
-		this.panel_12.add(this.btnAgrega);
-
-		this.panel_13 = new JPanel();
-		this.panel.add(this.panel_13);
-
-		this.panel_14 = new JPanel();
-		this.panel.add(this.panel_14);
-
-		this.panel_15 = new JPanel();
-		this.panel.add(this.panel_15);
+		this.lblVectorEst = new JLabel("Vector estacionario: ");
+		this.panel_3.add(this.lblVectorEst);
 
 		this.panel_4 = new JPanel();
 		this.panel.add(this.panel_4);
 
-		this.btnSalir = new JButton("Salir");
-		this.panel_4.add(this.btnSalir);
+		this.lblEntropia = new JLabel("Entropia:");
+		this.panel_4.add(this.lblEntropia);
 
-		this.panel_1 = new JPanel();
-		this.contentPane.add(this.panel_1);
-		this.panel_1.setLayout(new GridLayout(2, 0, 0, 0));
+		this.panel_5 = new JPanel();
+		this.panel.add(this.panel_5);
 
 		this.panel_2 = new JPanel();
-		this.panel_2.setBorder(new TitledBorder(new LineBorder(new Color(128, 128, 128), 2), "", TitledBorder.LEADING,
-				TitledBorder.TOP, null, null));
-		this.panel_1.add(this.panel_2);
-		this.panel_2.setLayout(new BorderLayout(0, 0));
+		this.panel.add(this.panel_2);
 
-		this.scrollPane_1 = new JScrollPane();
-		this.panel_2.add(this.scrollPane_1, BorderLayout.CENTER);
-
-		this.listMuestra = new JList();
-		this.scrollPane_1.setViewportView(this.listMuestra);
-
-		this.panel_3 = new JPanel();
-		this.panel_1.add(this.panel_3);
-		this.panel_3.setLayout(new GridLayout(2, 0, 0, 0));
-
-		this.panel_17 = new JPanel();
-		this.panel_3.add(this.panel_17);
-		this.panel_17.setLayout(new GridLayout(3, 0, 0, 0));
-
-		this.panel_19 = new JPanel();
-		this.panel_17.add(this.panel_19);
-
-		this.panel_20 = new JPanel();
-		this.panel_17.add(this.panel_20);
-
-		this.lblEntropia = new JLabel("Entropia:");
-		this.panel_20.add(this.lblEntropia);
-
-		this.panel_18 = new JPanel();
-		this.panel_17.add(this.panel_18);
-
-		this.panel_16 = new JPanel();
-		this.panel_3.add(this.panel_16);
-
-		this.lblNewLabel_2 = new JLabel("Vector Estacionario: ");
-		this.panel_16.add(this.lblNewLabel_2);
+		this.btnNewButton = new JButton("Salir");
+		this.panel_2.add(this.btnNewButton);
 		this.frame.setVisible(true);
+	}
+
+	/**
+	 * imprimeMensaje<br>
+	 * imprime un mensaje pasado por parametro en una ventana emergente<br>
+	 * 
+	 * @param mensaje : mensaje a imprimir
+	 */
+	public void imprimeMensaje(String mensaje) {
+		JOptionPane.showMessageDialog(this, mensaje);
+	}
+
+	public void setTextPane(String text) {
+		this.textPane.setText(text);
+	}
+
+	public void cerrar() {
+		this.dispose();
+	}
+
+	public void setActionListener(ActionListener actionListener) {
+
+		this.btnNewButton.addActionListener(actionListener);
+		this.actionListener = actionListener;
 	}
 
 }

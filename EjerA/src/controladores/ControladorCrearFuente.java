@@ -41,7 +41,7 @@ public class ControladorCrearFuente implements ActionListener
 			new ControladorNula(this.ventana.getBase(),this.ventana.getCantidadSimbolos());
 		} else if (tipoFuente.equals("MARKOV"))
 		{
-			new ControladorMarkov();
+			new ControladorMarkov(this.ventana.getBase(),this.ventana.getCantidadSimbolos());
 		}
 	}
 
