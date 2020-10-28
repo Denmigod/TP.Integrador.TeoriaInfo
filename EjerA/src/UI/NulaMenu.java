@@ -46,17 +46,11 @@ public class NulaMenu extends JFrame implements KeyListener
 	private JPanel panel_13;
 	private JPanel panel_14;
 	private JPanel panel_15;
-	private JLabel lblNewLabel;
-	private JTextField textField_Simbolo;
-	private JLabel lblNewLabel_1;
-	private JTextField textField_Probabilidad;
-	private JButton btnAgrega;
 	private JLabel lb_Entropia;
 	private JButton btnSalir;
 	private JButton btnCodigoInstantaneo;
 	private JButton btnSimularCodigos;
 	private JButton btnSimularSimbolos;
-	private JButton btnTerminar;
 
 	/**
 	 * Create the frame.
@@ -81,15 +75,8 @@ public class NulaMenu extends JFrame implements KeyListener
 		this.panel_6 = new JPanel();
 		this.panel.add(this.panel_6);
 
-		this.lblNewLabel = new JLabel("Ingrese Simbolo*");
-		this.panel_6.add(this.lblNewLabel);
-
 		this.panel_7 = new JPanel();
 		this.panel.add(this.panel_7);
-
-		this.textField_Simbolo = new JTextField();
-		this.panel_7.add(this.textField_Simbolo);
-		this.textField_Simbolo.setColumns(10);
 
 		this.panel_8 = new JPanel();
 		this.panel.add(this.panel_8);
@@ -97,25 +84,11 @@ public class NulaMenu extends JFrame implements KeyListener
 		this.panel_9 = new JPanel();
 		this.panel.add(this.panel_9);
 
-		this.lblNewLabel_1 = new JLabel("Ingrese Probabilidad *");
-		this.panel_9.add(this.lblNewLabel_1);
-
 		this.panel_10 = new JPanel();
 		this.panel.add(this.panel_10);
 
-		this.textField_Probabilidad = new JTextField();
-		this.panel_10.add(this.textField_Probabilidad);
-		this.textField_Probabilidad.setColumns(10);
-
 		this.panel_11 = new JPanel();
 		this.panel.add(this.panel_11);
-
-		this.btnAgrega = new JButton("Agregar");
-		this.btnAgrega.setEnabled(false);
-		this.panel_11.add(this.btnAgrega);
-
-		this.btnTerminar = new JButton("Terminar");
-		this.panel_11.add(this.btnTerminar);
 
 		this.panel_12 = new JPanel();
 		this.panel.add(this.panel_12);
