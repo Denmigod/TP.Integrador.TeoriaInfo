@@ -7,7 +7,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 import java.awt.Color;
@@ -17,7 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 
-public class NulaMenu extends JFrame
+public class NulaMenu extends JFrame implements KeyListener
 {
 
 	private JFrame frame;
@@ -50,6 +54,9 @@ public class NulaMenu extends JFrame
 	private JLabel lb_Entropia;
 	private JButton btnSalir;
 	private JButton btnCodigoInstantaneo;
+	private JButton btnSimularCodigos;
+	private JButton btnSimularSimbolos;
+	private JButton btnTerminar;
 
 	/**
 	 * Create the frame.
@@ -102,18 +109,28 @@ public class NulaMenu extends JFrame
 
 		this.panel_11 = new JPanel();
 		this.panel.add(this.panel_11);
-		
-				this.btnAgrega = new JButton("Agregar");
-				this.panel_11.add(this.btnAgrega);
+
+		this.btnAgrega = new JButton("Agregar");
+		this.btnAgrega.setEnabled(false);
+		this.panel_11.add(this.btnAgrega);
+
+		this.btnTerminar = new JButton("Terminar");
+		this.panel_11.add(this.btnTerminar);
 
 		this.panel_12 = new JPanel();
 		this.panel.add(this.panel_12);
-		
+
 		this.btnCodigoInstantaneo = new JButton("Crear codificacion instantanea");
 		this.panel_12.add(this.btnCodigoInstantaneo);
 
 		this.panel_13 = new JPanel();
 		this.panel.add(this.panel_13);
+
+		this.btnSimularCodigos = new JButton("Simular codigos");
+		this.panel_13.add(this.btnSimularCodigos);
+
+		this.btnSimularSimbolos = new JButton("Simular simbolos");
+		this.panel_13.add(this.btnSimularSimbolos);
 
 		this.panel_14 = new JPanel();
 		this.panel.add(this.panel_14);
@@ -160,4 +177,43 @@ public class NulaMenu extends JFrame
 		this.frame.setVisible(true);
 	}
 
+	@Override
+	public void keyPressed(KeyEvent arg0)
+	{
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0)
+	{
+		double probabilidad = 0;
+		String simbolo = this.textField_Simbolo.getText();
+		try
+		{
+			probabilidad = Double.parseDouble(this.textField_Probabilidad.getText());
+		} catch (NumberFormatException e)
+		{
+		}
+
+		boolean condicion = probabilidad >= 0 && probabilidad <= 1 && !simbolo.isEmpty();
+		this.btnAgrega.setEnabled(condicion);
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0)
+	{
+
+	}
+
+	/**
+	 * imprimeMensaje<br>
+	 * imprime un mensaje pasado por parametro en una ventana emergente<br>
+	 * 
+	 * @param mensaje : mensaje a imprimir
+	 */
+	public void imprimeMensaje(String mensaje)
+	{
+		JOptionPane.showMessageDialog(this, mensaje);
+	}
 }
