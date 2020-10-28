@@ -117,7 +117,7 @@ public class MarkovMenu extends JFrame
 
 	public void setVectorEstacionario(String vectorEstacinario)
 	{
-		this.lblVectorEst.setText("Vector estacionario:\n" + vectorEstacinario);
+		this.lblVectorEst.setText("Vector estacionario: " + vectorEstacinario);
 	}
 
 	public void cerrar()

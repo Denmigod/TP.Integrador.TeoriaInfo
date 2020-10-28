@@ -3,7 +3,6 @@ package controladores;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import UI.MarkovMenu;
 import UI.VentanaEmergenteMatrizTransicion;
