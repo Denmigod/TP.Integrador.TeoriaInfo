@@ -24,7 +24,7 @@ public class PruebaNula
 
 			fuenteMemNula.generaCodigoInstantaneo();
 
-			System.out.println("\n" + fuenteMemNula.enlistaFuente());
+			System.out.println("\n" + fuenteMemNula.enlistaCantidadInformacion());
 			System.out
 					.println(fuenteMemNula.verificaInecuacionKraft() + " " + fuenteMemNula.sumatoriaInecuacionKraft());
 			System.out.println(fuenteMemNula.generarSecuenciaCodigos(10));

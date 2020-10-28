@@ -53,7 +53,6 @@ public class VentanaEmergenteMemoriaNula extends JFrame
 		this.contentPane.add(this.panel_3);
 
 		this.btnAceptar = new JButton("Aceptar");
-		this.btnAceptar.setActionCommand("AceptarSimbolo");
 		this.panel_3.add(this.btnAceptar);
 
 		this.labelSimbolos = new JLabel[cantidadSimbolos];
@@ -111,24 +110,27 @@ public class VentanaEmergenteMemoriaNula extends JFrame
 
 		return probabilidades;
 	}
-	
-	public boolean validaBotonAceptar() {
+
+	public boolean validaBotonAceptar()
+	{
 		boolean condicion = true;
 		int i = 0, n = this.textFieldSimbolos.length;
-
-		while (condicion && i<n) {
-			double probabilidad = -1;
-			String simbolo = this.textFieldSimbolos[i].getText();
+		double probabilidad;
+		String simbolo;
+		while (condicion && i < n)
+		{
+			probabilidad = -1;
+			simbolo = this.textFieldSimbolos[i].getText();
 			try
 			{
 				probabilidad = Double.parseDouble(this.textFieldProbabilidad[i].getText());
 			} catch (NumberFormatException e)
 			{
 			}
+			i++;
 			condicion = probabilidad >= 0 && probabilidad <= 1 && !simbolo.isEmpty();
 		}
-		
-		
+
 		return condicion;
 	}
 
