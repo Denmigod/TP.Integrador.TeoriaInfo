@@ -148,13 +148,15 @@ public class MemoriaNula extends Fuente
 
 	/**
 	 * 
-	 *  metodo que genera una secuencia de codigos a partir de la fuente y su
+	 * metodo que genera una secuencia de codigos a partir de la fuente y su
 	 * distribuciuon de probabilidades
 	 * 
 	 * @param cantidad : cantidad de codigos a generar
 	 * @return : String con la secuencia de simbolos generada
-	 * @throws ProbabilidadTotalException : cuando la probabilidad acumulada no es 1  para la fuente
-	 * @throws CodigoInexistenteException : cuando la fuente no tiene codificacion asociada a los simbolos
+	 * @throws ProbabilidadTotalException : cuando la probabilidad acumulada no es 1
+	 *                                    para la fuente
+	 * @throws CodigoInexistenteException : cuando la fuente no tiene codificacion
+	 *                                    asociada a los simbolos
 	 */
 	public String generarSecuenciaCodigos(int cantidad) throws ProbabilidadTotalException, CodigoInexistenteException
 	{
@@ -199,26 +201,55 @@ public class MemoriaNula extends Fuente
 	 * 
 	 * @return : la cantidad de informacion
 	 */
-	public String enlistaFuente()
+	public String enlistaCantidadInformacion()
 	{
 		StringBuilder sb = new StringBuilder();
-		sb.append("Simbolo" + "\t" + "cant.info" + "\t" + "codigo" + "\n");
+		sb.append("Simbolo" + "\t" + "cant.info" + "\n");
 		Entry<String, Simbolo> entry;
 		Set<Entry<String, Simbolo>> entrySet = this.listaSimbolos.entrySet();
 		Iterator<Entry<String, Simbolo>> it = entrySet.iterator();
 		while (it.hasNext())
 		{
 			entry = it.next();
-			sb.append(
-					entry.getValue().getDato() + "\t" + String.format("%.5f", entry.getValue().getCantInformacion(base))
-							+ "\t" + "\t" + entry.getValue().getCodigo() + "\n");
+			sb.append(entry.getValue().getDato() + "\t"
+					+ String.format("%.5f", entry.getValue().getCantInformacion(base)) + "\n");
 		}
 		return sb.toString();
 	}
 
 	/**
-	 * Metodo que genera un codigo instantaneo binario para esta fuente y lo guarda en listaSimbolos
-	 * @throws ProbabilidadTotalException : cuando la probabilidad acumulada no es 1  para la fuente
+	 * Metodo que enlista la cantidad de informacion de todos los simbolos de la
+	 * fuente
+	 * 
+	 * @return : la cantidad de informacion
+	 */
+	public String enlistaFuente()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("Simbolo" + "\t" + "Probabilidad" + "\t" + "Codigo" + "\n");
+		Entry<String, Simbolo> entry;
+		Set<Entry<String, Simbolo>> entrySet = this.listaSimbolos.entrySet();
+		Iterator<Entry<String, Simbolo>> it = entrySet.iterator();
+		while (it.hasNext())
+		{
+			entry = it.next();
+			String codigo = entry.getValue().getCodigo();
+			if (codigo == null)
+			{
+				codigo = "/";
+			}
+			sb.append(entry.getValue().getDato() + "\t" + String.format("%.5f", entry.getValue().getProbabilidad())
+					+ "\t"  + codigo + "\n");
+		}
+		return sb.toString();
+	}
+
+	/**
+	 * Metodo que genera un codigo instantaneo binario para esta fuente y lo guarda
+	 * en listaSimbolos
+	 * 
+	 * @throws ProbabilidadTotalException : cuando la probabilidad acumulada no es 1
+	 *                                    para la fuente
 	 */
 	public void generaCodigoInstantaneo() throws ProbabilidadTotalException
 	{
@@ -261,9 +292,12 @@ public class MemoriaNula extends Fuente
 
 	/**
 	 * Se encarga de calcular la sumatoria de la inecuacion de Kraft
+	 * 
 	 * @return : double sumatoria (inecuacion de Kraft)
-	 * @throws ProbabilidadTotalException : cuando la probabilidad acumulada no es 1  para la fuente
-	 * @throws CodigoInexistenteException : cuando la fuente no tiene codificacion asociada a los simbolos
+	 * @throws ProbabilidadTotalException : cuando la probabilidad acumulada no es 1
+	 *                                    para la fuente
+	 * @throws CodigoInexistenteException : cuando la fuente no tiene codificacion
+	 *                                    asociada a los simbolos
 	 */
 	public double sumatoriaInecuacionKraft() throws ProbabilidadTotalException, CodigoInexistenteException
 	{
@@ -288,9 +322,12 @@ public class MemoriaNula extends Fuente
 
 	/**
 	 * Se encargar de calcular la longitud media de los codigos de la fuente
+	 * 
 	 * @return devuelve la longitud media de los codigos de la fuente
-	 * @throws ProbabilidadTotalException : cuando la probabilidad acumulada no es 1  para la fuente
-	 * @throws CodigoInexistenteException : cuando la fuente no tiene codificacion asociada a los simbolos
+	 * @throws ProbabilidadTotalException : cuando la probabilidad acumulada no es 1
+	 *                                    para la fuente
+	 * @throws CodigoInexistenteException : cuando la fuente no tiene codificacion
+	 *                                    asociada a los simbolos
 	 */
 	public double longitudMediaCodigo() throws ProbabilidadTotalException, CodigoInexistenteException
 	{
@@ -315,10 +352,14 @@ public class MemoriaNula extends Fuente
 	}
 
 	/**
-	 * Se encarga de comprobar todos los simbolos para ver si cumple que sea compacto o no
+	 * Se encarga de comprobar todos los simbolos para ver si cumple que sea
+	 * compacto o no
+	 * 
 	 * @return devuelve un verdadero o falso dependiendo si cumple
-	 * @throws ProbabilidadTotalException : cuando la probabilidad acumulada no es 1  para la fuente
-	 * @throws CodigoInexistenteException : cuando la fuente no tiene codificacion asociada a los simbolos
+	 * @throws ProbabilidadTotalException : cuando la probabilidad acumulada no es 1
+	 *                                    para la fuente
+	 * @throws CodigoInexistenteException : cuando la fuente no tiene codificacion
+	 *                                    asociada a los simbolos
 	 */
 	public boolean isCompacto() throws ProbabilidadTotalException, CodigoInexistenteException
 	{

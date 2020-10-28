@@ -30,19 +30,20 @@ public class ControladorCrearFuente implements ActionListener
 
 	private void atras()
 	{
-		ventana.dispose();
+		this.ventana.cerrar();
 	}
 
 	private void crear()
 	{
 		String tipoFuente = this.ventana.getTipoFuente();
 		if (tipoFuente.equals("NULA"))
-		{	
-			new ControladorNula(this.ventana.getBase(),this.ventana.getCantidadSimbolos());
+		{
+			new ControladorNula(this.ventana.getBase(), this.ventana.getCantidadSimbolos());
 		} else if (tipoFuente.equals("MARKOV"))
 		{
-			new ControladorMarkov();
+			new ControladorMarkov(this.ventana.getBase(), this.ventana.getCantidadSimbolos());
 		}
+		this.ventana.cerrar();
 	}
 
 }

@@ -204,11 +204,16 @@ public class FuenteMenu extends JFrame implements KeyListener
 	{
 
 	}
-	
-	public void setActionListener(ActionListener actionListener) {
+
+	public void setActionListener(ActionListener actionListener)
+	{
 		this.btnAtrasMenu.addActionListener(actionListener);
 		this.btnCrear.addActionListener(actionListener);
 		this.actionListener = actionListener;
 	}
 
+	public void cerrar()
+	{
+		this.frame.dispose();
+	}
 }

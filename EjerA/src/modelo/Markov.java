@@ -70,7 +70,7 @@ public class Markov extends Fuente
 	}
 
 	@Override
-	public double getEntropia() throws ProbabilidadTotalException
+	public double getEntropia() 
 	{
 		double resultado = 0;
 		int n = simbolos.size();
