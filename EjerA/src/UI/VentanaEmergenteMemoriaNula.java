@@ -105,7 +105,7 @@ public class VentanaEmergenteMemoriaNula extends JFrame
 		double[] probabilidades = new double[cantidadProbabilidades];
 		for (int i = 0; i < cantidadProbabilidades; i++)
 		{
-			probabilidades[i] = Double.parseDouble(this.textFieldProbabilidad[i].getText());
+			probabilidades[i] = Double.parseDouble(this.textFieldProbabilidad[i].getText().replace(',', '.'));
 		}
 
 		return probabilidades;
@@ -123,7 +123,7 @@ public class VentanaEmergenteMemoriaNula extends JFrame
 			simbolo = this.textFieldSimbolos[i].getText();
 			try
 			{
-				probabilidad = Double.parseDouble(this.textFieldProbabilidad[i].getText());
+				probabilidad = Double.parseDouble(this.textFieldProbabilidad[i].getText().replace(',', '.'));
 			} catch (NumberFormatException e)
 			{
 			}

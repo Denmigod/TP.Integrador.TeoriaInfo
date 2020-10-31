@@ -83,7 +83,7 @@ public class VentanaEmergenteMatrizTransicion extends JFrame
 		{
 			for (int j = 0; j < dimension; j++)
 			{
-				probabilidades[i][j] = Double.parseDouble(this.textFieldProbabilidad[i][j].getText());
+				probabilidades[i][j] = Double.parseDouble(this.textFieldProbabilidad[i][j].getText().replace(',', '.'));
 			}
 		}
 
@@ -105,7 +105,7 @@ public class VentanaEmergenteMatrizTransicion extends JFrame
 				simbolo = this.textFieldProbabilidad[i][j].getText();
 				try
 				{
-					probabilidad = Double.parseDouble(this.textFieldProbabilidad[i][j].getText());
+					probabilidad = Double.parseDouble(this.textFieldProbabilidad[i][j].getText().replace(',', '.'));
 				} catch (NumberFormatException e)
 				{
 				}
