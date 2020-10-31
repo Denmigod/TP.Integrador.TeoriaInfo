@@ -46,7 +46,17 @@ public class ControladorMarkov implements ActionListener
 		else if (comando.equals("Salir"))
 		{
 			this.ventana.cerrar();
+		} else if (comando.equals("Simular"))
+		{
+			this.botonSimular();
 		}
+
+	}
+
+	private void botonSimular()
+	{
+		int cantidad = this.ventana.getCantidad();
+		this.ventana.imprimeMensaje("Secuencia de simbolos:\n" + this.fuente.generarSimbolos(cantidad));
 
 	}
 
