@@ -70,7 +70,7 @@ public class Markov extends Fuente
 	}
 
 	@Override
-	public double getEntropia() 
+	public double getEntropia()
 	{
 		double resultado = 0;
 		int n = simbolos.size();
@@ -105,7 +105,7 @@ public class Markov extends Fuente
 		Random randnum = new Random();
 		randnum.setSeed(System.nanoTime());
 
-		if (simboloAnterior == null)
+		if (this.simboloAnterior == null)
 		{
 			columnaSimboloAnterior = randnum.nextInt(this.simbolos.size());
 			this.simboloAnterior = this.simbolos.get(columnaSimboloAnterior);
@@ -120,10 +120,10 @@ public class Markov extends Fuente
 			int j = -1;
 			while (sumaProbabilidades <= numeroRandom)
 			{
-				sumaProbabilidades += this.matrizTransicion[j][columnaSimboloAnterior];
-				j++;
+				sumaProbabilidades += this.matrizTransicion[++j][columnaSimboloAnterior];
 			}
 			sb.append(this.simbolos.get(j));
+			this.simboloAnterior = this.simbolos.get(j);
 		}
 
 		return sb.toString();

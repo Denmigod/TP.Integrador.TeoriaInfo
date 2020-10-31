@@ -22,8 +22,10 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.JTextPane;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyEvent;
 
-public class MarkovMenu extends JFrame
+public class MarkovMenu extends JFrame implements KeyListener
 {
 
 	private JFrame frame;
@@ -40,6 +42,9 @@ public class MarkovMenu extends JFrame
 	private JLabel lblVectorEst;
 	private JLabel lblEntropia;
 	private ActionListener actionListener;
+	private JButton btnSimular;
+	private JTextField textFieldCantidad;
+	private JLabel lblCantidad;
 
 	/**
 	 * Create the frame.
@@ -85,6 +90,19 @@ public class MarkovMenu extends JFrame
 		this.panel_5 = new JPanel();
 		this.panel.add(this.panel_5);
 
+		this.lblCantidad = new JLabel("Cantidad:");
+		this.panel_5.add(this.lblCantidad);
+
+		this.textFieldCantidad = new JTextField();
+		this.textFieldCantidad.addKeyListener(this);
+		this.panel_5.add(this.textFieldCantidad);
+		this.textFieldCantidad.setColumns(10);
+
+		this.btnSimular = new JButton("Simular secuencia");
+		this.btnSimular.setEnabled(false);
+		this.btnSimular.setActionCommand("Simular");
+		this.panel_5.add(this.btnSimular);
+
 		this.panel_2 = new JPanel();
 		this.panel.add(this.panel_2);
 
@@ -117,7 +135,7 @@ public class MarkovMenu extends JFrame
 
 	public void setVectorEstacionario(String vectorEstacinario)
 	{
-		this.lblVectorEst.setText("Vector estacionario:\n" + vectorEstacinario);
+		this.lblVectorEst.setText("Vector estacionario: " + vectorEstacinario);
 	}
 
 	public void cerrar()
@@ -127,9 +145,36 @@ public class MarkovMenu extends JFrame
 
 	public void setActionListener(ActionListener actionListener)
 	{
-
+		this.btnSimular.addActionListener(actionListener);
 		this.btnNewButton.addActionListener(actionListener);
 		this.actionListener = actionListener;
 	}
 
+	public void keyPressed(KeyEvent arg0)
+	{
+	}
+
+	public void keyReleased(KeyEvent arg0)
+	{
+		int cantidad = 0;
+
+		try
+		{
+			cantidad = Integer.parseInt(this.textFieldCantidad.getText());
+		} catch (NumberFormatException e)
+		{
+		}
+		boolean condicion = cantidad > 0;
+		this.btnSimular.setEnabled(condicion);
+
+	}
+
+	public void keyTyped(KeyEvent arg0)
+	{
+	}
+
+	public int getCantidad()
+	{
+		return Integer.parseInt(this.textFieldCantidad.getText());
+	}
 }

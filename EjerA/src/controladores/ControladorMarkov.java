@@ -3,7 +3,6 @@ package controladores;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import UI.MarkovMenu;
 import UI.VentanaEmergenteMatrizTransicion;
@@ -47,7 +46,17 @@ public class ControladorMarkov implements ActionListener
 		else if (comando.equals("Salir"))
 		{
 			this.ventana.cerrar();
+		} else if (comando.equals("Simular"))
+		{
+			this.botonSimular();
 		}
+
+	}
+
+	private void botonSimular()
+	{
+		int cantidad = this.ventana.getCantidad();
+		this.ventana.imprimeMensaje("Secuencia de simbolos:\n" + this.fuente.generarSimbolos(cantidad));
 
 	}
 
