@@ -57,6 +57,7 @@ public class ControladorMarkov implements ActionListener
 	{
 		int cantidad = this.ventana.getCantidad();
 		this.ventana.imprimeMensaje("Secuencia de simbolos:\n" + this.fuente.generarSimbolos(cantidad));
+		System.out.println(this.fuente.generarSimbolos(cantidad));
 
 	}
 
