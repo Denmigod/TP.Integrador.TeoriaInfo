@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 public abstract class LeeArchivo
 {
@@ -46,4 +47,47 @@ public abstract class LeeArchivo
 		}
 		return sb.toString();
 	}
+
+	public static HashMap<Integer, Integer> obtenerFrecuencia(String direccion)
+	{
+		HashMap<Integer, Integer> listaSimbolos = new HashMap<Integer, Integer>();
+		BufferedReader reader = null;
+		try
+		{
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(direccion), "UTF-8"));
+			int caracter = reader.read();
+			while (caracter != -1)
+			{
+				if (listaSimbolos.containsKey(caracter))
+				{
+					listaSimbolos.replace(caracter, listaSimbolos.get(caracter) + 1);
+				} else
+				{
+					listaSimbolos.put(caracter, 1);
+				}
+				caracter = reader.read();
+			}
+
+		} catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		} finally
+		{
+			if (reader != null)
+			{
+				try
+				{
+					reader.close();
+				} catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
+		return listaSimbolos;
+	}
+
 }
