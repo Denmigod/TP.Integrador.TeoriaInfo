@@ -1,4 +1,4 @@
-package archivos;
+package archivo;
 
 import java.io.BufferedReader;
 

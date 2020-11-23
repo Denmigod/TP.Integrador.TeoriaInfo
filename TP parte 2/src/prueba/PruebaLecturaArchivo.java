@@ -1,6 +1,6 @@
-package Pruebas;
+package prueba;
 
-import archivos.LeeArchivo;
+import archivo.LeeArchivo;
 
 public class PruebaLecturaArchivo
 {
