@@ -18,23 +18,23 @@ import java.util.Map.Entry;
 
 import archivo.LeeArchivo;
 
-public class Huffman
+public class ShannonFano
 {
-
 	private static HashMap<Integer, String> cearDiccionario(String direccion)
 	{
 		HashMap<Integer, String> diccionario = new HashMap<Integer, String>();
+		int[] frecuenciaAcumulada = new int[1];
 
-		NodoArbolHuffman[] vectorNodosArbol = Huffman.creaVectorNodosArbol(LeeArchivo.obtenerFrecuencia(direccion));
-		Huffman.BubbleSort(vectorNodosArbol, vectorNodosArbol.length);
-		NodoArbolHuffman arbolHuffman = Huffman.crearArbolsHuffman(vectorNodosArbol);
-		Huffman.generaDiccionario(arbolHuffman, diccionario, "");
+		NodoShannonFano[] vectorNodos = ShannonFano.creaVectorNodos(LeeArchivo.obtenerFrecuencia(direccion),
+				frecuenciaAcumulada);
+		ShannonFano.BubbleSort(vectorNodos, vectorNodos.length);
+		ShannonFano.generaDiccionario(vectorNodos, frecuenciaAcumulada, diccionario);
 		return diccionario;
 	}
 
-	private static NodoArbolHuffman[] creaVectorNodosArbol(HashMap<Integer, Integer> listaSimbolos)
+	private static NodoShannonFano[] creaVectorNodos(HashMap<Integer, Integer> listaSimbolos, int[] frecuenciaAcumulada)
 	{
-		NodoArbolHuffman[] vectorNodosArbol = new NodoArbolHuffman[listaSimbolos.size()];
+		NodoShannonFano[] vectorNodos = new NodoShannonFano[listaSimbolos.size()];
 		int i = 0;
 		Entry<Integer, Integer> entry;
 		Set<Entry<Integer, Integer>> entrySet = listaSimbolos.entrySet();
@@ -42,68 +42,96 @@ public class Huffman
 		while (it.hasNext())
 		{
 			entry = it.next();
-			vectorNodosArbol[i] = new NodoArbolHuffman(entry.getKey(), entry.getValue());
+			vectorNodos[i] = new NodoShannonFano(entry.getKey(), entry.getValue());
+			frecuenciaAcumulada[0] += entry.getValue();
 			i++;
 		}
 
-		return vectorNodosArbol;
+		return vectorNodos;
 	}
 
-	private static void BubbleSort(NodoArbolHuffman[] vectorNodosArbol, int cantElementos)
+	private static void BubbleSort(NodoShannonFano[] vectorNodos, int cantElementos) // ordena de mayor a menor
 	{
 		int n = cantElementos;
-		NodoArbolHuffman tempSimb;
+		NodoShannonFano tempSimb;
 		for (int i = 0; i < n; i++)
 		{
 			for (int j = 1; j < (n - i); j++)
 			{
-				if (vectorNodosArbol[j - 1].getFrecuencia() < vectorNodosArbol[j].getFrecuencia())
+				if (vectorNodos[j - 1].getFrecuencia() < vectorNodos[j].getFrecuencia())
 				{
 
 					// swap elements
 
-					tempSimb = vectorNodosArbol[j - 1];
+					tempSimb = vectorNodos[j - 1];
 
-					vectorNodosArbol[j - 1] = vectorNodosArbol[j];
-					vectorNodosArbol[j] = tempSimb;
+					vectorNodos[j - 1] = vectorNodos[j];
+					vectorNodos[j] = tempSimb;
 				}
 			}
 		}
 	}
 
-	private static NodoArbolHuffman crearArbolsHuffman(NodoArbolHuffman[] vectorNodosArbol)
+	private static void generaDiccionario(NodoShannonFano[] vectorNodos, int[] frecuenciaAcumulada,
+			HashMap<Integer, String> diccionario)
 	{
-		NodoArbolHuffman raiz = null;
-		int n = vectorNodosArbol.length;
-
-		while (n > 1)
-		{
-			NodoArbolHuffman nuevoNodo = new NodoArbolHuffman(-1,
-					vectorNodosArbol[n - 1].getFrecuencia() + vectorNodosArbol[n - 2].getFrecuencia());
-			nuevoNodo.setHijoIzquierda(vectorNodosArbol[n - 1]);
-			nuevoNodo.setHijoDerecha(vectorNodosArbol[n - 2]);
-			vectorNodosArbol[n - 2] = nuevoNodo;
-			n--;
-			Huffman.BubbleSort(vectorNodosArbol, n);
-		}
-
-		raiz = vectorNodosArbol[0];
-
-		return raiz;
+		ShannonFano.generaDiccionarioRecursividad(vectorNodos, frecuenciaAcumulada, diccionario, 0,
+				vectorNodos.length - 1, "");
 	}
 
-	private static void generaDiccionario(NodoArbolHuffman arbolHuffman, HashMap<Integer, String> diccionario,
-			String binario)
+	private static void generaDiccionarioRecursividad(NodoShannonFano[] vectorNodos, int[] frecuenciaAcumulada,
+			HashMap<Integer, String> diccionario, int limiteIzq, int limiteDer, String binario)
 	{
-		if (arbolHuffman.getSimbolo() != -1) // nodo hoja
+		if (limiteIzq == limiteDer) // caso base
 		{
-			diccionario.put(arbolHuffman.getSimbolo(), binario);
-		} else // voy izq y derecha
+			diccionario.put(vectorNodos[limiteIzq].getSimbolo(), binario);
+			System.out.println(binario);
+		} else
 		{
-			Huffman.generaDiccionario(arbolHuffman.getHijoIzquierda(), diccionario, binario + "0");
-			Huffman.generaDiccionario(arbolHuffman.getHijoDerecha(), diccionario, binario + "1");
+			int[] frecuenciaIzq = new int[1];
+			int[] frecuenciaDer = new int[1];
+			int mitad = ShannonFano.obtenerMitadVectorNodos(vectorNodos, limiteIzq, limiteDer, frecuenciaAcumulada[0], frecuenciaIzq,
+					frecuenciaDer);
+			
+			ShannonFano.generaDiccionarioRecursividad(vectorNodos, frecuenciaIzq, diccionario, limiteIzq, mitad, binario+"1");
+			ShannonFano.generaDiccionarioRecursividad(vectorNodos, frecuenciaDer, diccionario, mitad+1, limiteDer, binario+"0");
 		}
+
 		return;
+	}
+
+	/**
+	 * funcion que devuelve la mitad de la zona del vector dividiendo por la
+	 * frecuencia de los simbolos
+	 * 
+	 * @param vectorNodos:         vector de los nodos de Shannon Fano
+	 * @param limiteIzq:           limite del vector por izq inclusive primer
+	 *                             posicion
+	 * @param limiteDer:           limite del vector por der inclusive ultima
+	 *                             posicion
+	 * @param frecuenciaAcumulada: frecuencia acumulada de la zona del vector a
+	 *                             evaluar
+	 * @param frecuenciaIzq:       frecuencia de salida de la zona izq del vector
+	 * @param frecuenciaDer:       frecuencia de salida de la zona der del vector
+	 * @return retorna la posicion de la mitad logica del vector teniendo en cuenta
+	 *         las frecuencias
+	 */
+	private static int obtenerMitadVectorNodos(NodoShannonFano[] vectorNodos, int limiteIzq, int limiteDer,
+			int frecuenciaAcumulada, int[] frecuenciaIzq, int[] frecuenciaDer)
+	{
+		frecuenciaIzq[0] = vectorNodos[limiteIzq].getFrecuencia();
+		frecuenciaDer[0] = 0;
+		int i = limiteIzq;
+		int mitadFrecuencia = frecuenciaAcumulada / 2;
+		while (i < limiteDer && frecuenciaIzq[0] < mitadFrecuencia)
+		{
+			i++;
+			frecuenciaIzq[0] += vectorNodos[i].getFrecuencia();
+			
+		}
+		frecuenciaDer[0] = frecuenciaAcumulada - frecuenciaIzq[0];
+		
+		return i;
 	}
 
 	public static void comprimir(String direccion, String nombre)
@@ -111,7 +139,7 @@ public class Huffman
 
 		BufferedReader reader = null;
 		BitSet bs = new BitSet();
-		HashMap<Integer, String> diccionario = Huffman.cearDiccionario(direccion);
+		HashMap<Integer, String> diccionario = ShannonFano.cearDiccionario(direccion);
 		try
 		{
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream(direccion), "UTF-8"));
@@ -128,7 +156,7 @@ public class Huffman
 				}
 				caracter = reader.read();
 			}
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nombre + ".huf"));
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nombre + ".Shn"));
 			oos.writeObject(diccionario);
 			oos.writeObject(bs);
 			oos.close();
@@ -180,7 +208,7 @@ public class Huffman
 							codigo = codigo + "1";
 						else
 							codigo = codigo + "0";
-						int simbolo = Huffman.buscaCodigo(diccionario, codigo);
+						int simbolo = ShannonFano.buscaCodigo(diccionario, codigo);
 						if (simbolo != -1)
 						{ // lo encontre y tengo que escribirlo
 							writer.write((char) simbolo);
@@ -245,5 +273,4 @@ public class Huffman
 		}
 		return simbolo;
 	}
-
 }
