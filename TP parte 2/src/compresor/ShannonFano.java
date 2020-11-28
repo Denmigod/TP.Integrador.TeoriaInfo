@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,19 +22,78 @@ import archivo.LeeArchivo;
 
 public class ShannonFano
 {
-	private static HashMap<Integer, String> cearDiccionario(String direccion)
+	private HashMap<Integer, String> diccionario = new HashMap<Integer, String>();
+	private int[] probabilidadAcumulada = new int[1];
+	private double entropia;
+	private double longitudMedia;
+	private double tasaCompresion;
+	
+	
+	public ShannonFano()
 	{
-		HashMap<Integer, String> diccionario = new HashMap<Integer, String>();
-		int[] frecuenciaAcumulada = new int[1];
-
-		NodoShannonFano[] vectorNodos = ShannonFano.creaVectorNodos(LeeArchivo.obtenerFrecuencia(direccion),
-				frecuenciaAcumulada);
-		ShannonFano.BubbleSort(vectorNodos, vectorNodos.length);
-		ShannonFano.generaDiccionario(vectorNodos, frecuenciaAcumulada, diccionario);
+		this.entropia = 0;
+		this.longitudMedia = 0;
+		this.tasaCompresion = 0;
+	}
+	
+	/**
+	 * @return the diccionario
+	 */
+	public HashMap<Integer, String> getDiccionario()
+	{
 		return diccionario;
 	}
 
-	private static NodoShannonFano[] creaVectorNodos(HashMap<Integer, Integer> listaSimbolos, int[] frecuenciaAcumulada)
+	/**
+	 * @return the probabilidadAcumulada
+	 */
+	public int getProbabilidadAcumulada()
+	{
+		return probabilidadAcumulada[0];
+	}
+
+	/**
+	 * @return the entropia
+	 */
+	public double getEntropia()
+	{
+		return entropia;
+	}
+
+	/**
+	 * @return the longitudMedia
+	 */
+	public double getLongitudMedia()
+	{
+		return longitudMedia;
+	}
+
+	/**
+	 * @return the tasaCompresion
+	 */
+	public double getTasaCompresion()
+	{
+		return tasaCompresion;
+	}
+
+	public double getRendimiento()
+	{
+		return this.entropia / this.longitudMedia;
+	}
+
+	public double getRedundancia()
+	{
+		return 1 - this.getRendimiento();
+	}
+
+	private void cearDiccionario(String direccion)
+	{
+		NodoShannonFano[] vectorNodos = this.creaVectorNodos(LeeArchivo.obtenerFrecuencia(direccion,this.probabilidadAcumulada));
+		this.BubbleSort(vectorNodos, vectorNodos.length);
+		this.generaDiccionario(vectorNodos);
+	}
+
+	private NodoShannonFano[] creaVectorNodos(HashMap<Integer, Integer> listaSimbolos)
 	{
 		NodoShannonFano[] vectorNodos = new NodoShannonFano[listaSimbolos.size()];
 		int i = 0;
@@ -43,14 +104,13 @@ public class ShannonFano
 		{
 			entry = it.next();
 			vectorNodos[i] = new NodoShannonFano(entry.getKey(), entry.getValue());
-			frecuenciaAcumulada[0] += entry.getValue();
 			i++;
 		}
 
 		return vectorNodos;
 	}
 
-	private static void BubbleSort(NodoShannonFano[] vectorNodos, int cantElementos) // ordena de mayor a menor
+	private void BubbleSort(NodoShannonFano[] vectorNodos, int cantElementos) // ordena de mayor a menor
 	{
 		int n = cantElementos;
 		NodoShannonFano tempSimb;
@@ -72,29 +132,29 @@ public class ShannonFano
 		}
 	}
 
-	private static void generaDiccionario(NodoShannonFano[] vectorNodos, int[] frecuenciaAcumulada,
-			HashMap<Integer, String> diccionario)
+	private void generaDiccionario(NodoShannonFano[] vectorNodos)
 	{
-		ShannonFano.generaDiccionarioRecursividad(vectorNodos, frecuenciaAcumulada, diccionario, 0,
+		this.generaDiccionarioRecursividad(vectorNodos, this.probabilidadAcumulada, 0,
 				vectorNodos.length - 1, "");
 	}
 
-	private static void generaDiccionarioRecursividad(NodoShannonFano[] vectorNodos, int[] frecuenciaAcumulada,
-			HashMap<Integer, String> diccionario, int limiteIzq, int limiteDer, String binario)
+	private void generaDiccionarioRecursividad(NodoShannonFano[] vectorNodos, int[] probabilidadAcumulada, int limiteIzq, int limiteDer, String binario)
 	{
 		if (limiteIzq == limiteDer) // caso base
 		{
-			diccionario.put(vectorNodos[limiteIzq].getSimbolo(), binario);
-			System.out.println(binario);
+			this.diccionario.put(vectorNodos[limiteIzq].getSimbolo(), binario);
+			double probabilidad = (double) vectorNodos[limiteIzq].getFrecuencia() / (double) this.probabilidadAcumulada[0];
+			this.entropia += probabilidad * (-1) * Math.log(probabilidad) / Math.log(2);
+			this.longitudMedia += probabilidad * binario.length();
 		} else
 		{
 			int[] frecuenciaIzq = new int[1];
 			int[] frecuenciaDer = new int[1];
-			int mitad = ShannonFano.obtenerMitadVectorNodos(vectorNodos, limiteIzq, limiteDer, frecuenciaAcumulada[0], frecuenciaIzq,
+			int mitad = this.obtenerMitadVectorNodos(vectorNodos, limiteIzq, limiteDer, probabilidadAcumulada[0], frecuenciaIzq,
 					frecuenciaDer);
 			
-			ShannonFano.generaDiccionarioRecursividad(vectorNodos, frecuenciaIzq, diccionario, limiteIzq, mitad, binario+"1");
-			ShannonFano.generaDiccionarioRecursividad(vectorNodos, frecuenciaDer, diccionario, mitad+1, limiteDer, binario+"0");
+			this.generaDiccionarioRecursividad(vectorNodos, frecuenciaIzq, limiteIzq, mitad, binario+"1");
+			this.generaDiccionarioRecursividad(vectorNodos, frecuenciaDer, mitad+1, limiteDer, binario+"0");
 		}
 
 		return;
@@ -116,7 +176,7 @@ public class ShannonFano
 	 * @return retorna la posicion de la mitad logica del vector teniendo en cuenta
 	 *         las frecuencias
 	 */
-	private static int obtenerMitadVectorNodos(NodoShannonFano[] vectorNodos, int limiteIzq, int limiteDer,
+	private int obtenerMitadVectorNodos(NodoShannonFano[] vectorNodos, int limiteIzq, int limiteDer,
 			int frecuenciaAcumulada, int[] frecuenciaIzq, int[] frecuenciaDer)
 	{
 		frecuenciaIzq[0] = vectorNodos[limiteIzq].getFrecuencia();
@@ -134,12 +194,12 @@ public class ShannonFano
 		return i;
 	}
 
-	public static void comprimir(String direccion, String nombre)
+	public void comprimir(String direccion, String nombre)
 	{
 
 		BufferedReader reader = null;
 		BitSet bs = new BitSet();
-		HashMap<Integer, String> diccionario = ShannonFano.cearDiccionario(direccion);
+		this.cearDiccionario(direccion);
 		try
 		{
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream(direccion), "UTF-8"));
@@ -148,7 +208,7 @@ public class ShannonFano
 			String codigo;
 			while (caracter != -1)
 			{
-				codigo = diccionario.get(caracter);
+				codigo = this.diccionario.get(caracter);
 				for (int i = 0; i < codigo.length(); i++)
 				{
 					bs.set(bitActual, codigo.charAt(i) == '1');
@@ -157,7 +217,7 @@ public class ShannonFano
 				caracter = reader.read();
 			}
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nombre + ".Shn"));
-			oos.writeObject(diccionario);
+			oos.writeObject(this.diccionario);
 			oos.writeObject(bs);
 			oos.close();
 
@@ -179,11 +239,19 @@ public class ShannonFano
 					e.printStackTrace();
 				}
 			}
+			try
+			{
+				this.tasaCompresion = (double) Files.size(Paths.get(direccion))
+						/ (double) Files.size(Paths.get(nombre + ".Shn"));
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void descomprimr(String direccion, String nombre)
+	public void descomprimr(String direccion, String nombre)
 	{
 		BufferedWriter writer = null;
 		ObjectInputStream ois = null;
@@ -208,7 +276,7 @@ public class ShannonFano
 							codigo = codigo + "1";
 						else
 							codigo = codigo + "0";
-						int simbolo = ShannonFano.buscaCodigo(diccionario, codigo);
+						int simbolo = this.buscaCodigo(diccionario, codigo);
 						if (simbolo != -1)
 						{ // lo encontre y tengo que escribirlo
 							writer.write((char) simbolo);
@@ -254,7 +322,7 @@ public class ShannonFano
 		}
 	}
 
-	private static int buscaCodigo(HashMap<Integer, String> diccionario, String codigo)
+	private int buscaCodigo(HashMap<Integer, String> diccionario, String codigo)
 	{
 
 		int simbolo = -1; // retorna -1 si no lo encuentra

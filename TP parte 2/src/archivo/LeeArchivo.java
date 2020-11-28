@@ -48,16 +48,18 @@ public abstract class LeeArchivo
 		return sb.toString();
 	}
 
-	public static HashMap<Integer, Integer> obtenerFrecuencia(String direccion)
+	public static HashMap<Integer, Integer> obtenerFrecuencia(String direccion, int[] cantidadSimbolos)
 	{
 		HashMap<Integer, Integer> listaSimbolos = new HashMap<Integer, Integer>();
 		BufferedReader reader = null;
+		cantidadSimbolos[0]=0;
 		try
 		{
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream(direccion), "UTF-8"));
 			int caracter = reader.read();
 			while (caracter != -1)
 			{
+				cantidadSimbolos[0]+=1;
 				if (listaSimbolos.containsKey(caracter))
 				{
 					listaSimbolos.replace(caracter, listaSimbolos.get(caracter) + 1);

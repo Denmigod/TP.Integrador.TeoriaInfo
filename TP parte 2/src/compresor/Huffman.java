@@ -10,6 +10,8 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -20,19 +22,80 @@ import archivo.LeeArchivo;
 
 public class Huffman
 {
+	private HashMap<Integer, String> diccionario = new HashMap<Integer, String>();
+	private int[] probabilidadAcumulada = new int[1];
+	private double entropia;
+	private double longitudMedia;
+	private double tasaCompresion;
 
-	private static HashMap<Integer, String> cearDiccionario(String direccion)
+	public Huffman()
 	{
-		HashMap<Integer, String> diccionario = new HashMap<Integer, String>();
+		this.entropia = 0;
+		this.longitudMedia = 0;
+		this.tasaCompresion = 0;
+	}
 
-		NodoArbolHuffman[] vectorNodosArbol = Huffman.creaVectorNodosArbol(LeeArchivo.obtenerFrecuencia(direccion));
-		Huffman.BubbleSort(vectorNodosArbol, vectorNodosArbol.length);
-		NodoArbolHuffman arbolHuffman = Huffman.crearArbolsHuffman(vectorNodosArbol);
-		Huffman.generaDiccionario(arbolHuffman, diccionario, "");
+	/**
+	 * @return the diccionario
+	 */
+	public HashMap<Integer, String> getDiccionario()
+	{
 		return diccionario;
 	}
 
-	private static NodoArbolHuffman[] creaVectorNodosArbol(HashMap<Integer, Integer> listaSimbolos)
+	/**
+	 * @return the probabilidadAcumulada
+	 */
+	public int getProbabilidadAcumulada()
+	{
+		return probabilidadAcumulada[0];
+	}
+
+	/**
+	 * @return the entropia
+	 */
+	public double getEntropia()
+	{
+		return entropia;
+	}
+
+	/**
+	 * @return the longitudMedia
+	 */
+	public double getLongitudMedia()
+	{
+		return longitudMedia;
+	}
+
+	/**
+	 * @return the tasaCompresion
+	 */
+	public double getTasaCompresion()
+	{
+		return tasaCompresion;
+	}
+
+	public double getRendimiento()
+	{
+		return this.entropia / this.longitudMedia;
+	}
+
+	public double getRedundancia()
+	{
+		return 1 - this.getRendimiento();
+	}
+
+	private void cearDiccionario(String direccion)
+	{
+		NodoArbolHuffman[] vectorNodosArbol = this
+				.creaVectorNodosArbol(LeeArchivo.obtenerFrecuencia(direccion, this.probabilidadAcumulada));
+		this.BubbleSort(vectorNodosArbol, vectorNodosArbol.length);
+		NodoArbolHuffman arbolHuffman = this.crearArbolsHuffman(vectorNodosArbol);
+		this.generaDiccionario(arbolHuffman, "");
+
+	}
+
+	private NodoArbolHuffman[] creaVectorNodosArbol(HashMap<Integer, Integer> listaSimbolos)
 	{
 		NodoArbolHuffman[] vectorNodosArbol = new NodoArbolHuffman[listaSimbolos.size()];
 		int i = 0;
@@ -49,7 +112,7 @@ public class Huffman
 		return vectorNodosArbol;
 	}
 
-	private static void BubbleSort(NodoArbolHuffman[] vectorNodosArbol, int cantElementos)
+	private void BubbleSort(NodoArbolHuffman[] vectorNodosArbol, int cantElementos)
 	{
 		int n = cantElementos;
 		NodoArbolHuffman tempSimb;
@@ -71,7 +134,7 @@ public class Huffman
 		}
 	}
 
-	private static NodoArbolHuffman crearArbolsHuffman(NodoArbolHuffman[] vectorNodosArbol)
+	private NodoArbolHuffman crearArbolsHuffman(NodoArbolHuffman[] vectorNodosArbol)
 	{
 		NodoArbolHuffman raiz = null;
 		int n = vectorNodosArbol.length;
@@ -84,7 +147,7 @@ public class Huffman
 			nuevoNodo.setHijoDerecha(vectorNodosArbol[n - 2]);
 			vectorNodosArbol[n - 2] = nuevoNodo;
 			n--;
-			Huffman.BubbleSort(vectorNodosArbol, n);
+			this.BubbleSort(vectorNodosArbol, n);
 		}
 
 		raiz = vectorNodosArbol[0];
@@ -92,26 +155,28 @@ public class Huffman
 		return raiz;
 	}
 
-	private static void generaDiccionario(NodoArbolHuffman arbolHuffman, HashMap<Integer, String> diccionario,
-			String binario)
+	private void generaDiccionario(NodoArbolHuffman arbolHuffman, String binario)
 	{
 		if (arbolHuffman.getSimbolo() != -1) // nodo hoja
 		{
-			diccionario.put(arbolHuffman.getSimbolo(), binario);
+			this.diccionario.put(arbolHuffman.getSimbolo(), binario);
+			double probabilidad = (double) arbolHuffman.getFrecuencia() / (double) this.probabilidadAcumulada[0];
+			this.entropia += probabilidad * (-1) * Math.log(probabilidad) / Math.log(2);
+			this.longitudMedia += probabilidad * binario.length();
 		} else // voy izq y derecha
 		{
-			Huffman.generaDiccionario(arbolHuffman.getHijoIzquierda(), diccionario, binario + "0");
-			Huffman.generaDiccionario(arbolHuffman.getHijoDerecha(), diccionario, binario + "1");
+			this.generaDiccionario(arbolHuffman.getHijoIzquierda(), binario + "0");
+			this.generaDiccionario(arbolHuffman.getHijoDerecha(), binario + "1");
 		}
 		return;
 	}
 
-	public static void comprimir(String direccion, String nombre)
+	public void comprimir(String direccion, String nombre)
 	{
 
 		BufferedReader reader = null;
 		BitSet bs = new BitSet();
-		HashMap<Integer, String> diccionario = Huffman.cearDiccionario(direccion);
+		this.cearDiccionario(direccion);
 		try
 		{
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream(direccion), "UTF-8"));
@@ -132,7 +197,6 @@ public class Huffman
 			oos.writeObject(diccionario);
 			oos.writeObject(bs);
 			oos.close();
-
 		} catch (FileNotFoundException e)
 		{
 			e.printStackTrace();
@@ -151,11 +215,19 @@ public class Huffman
 					e.printStackTrace();
 				}
 			}
+			try
+			{
+				this.tasaCompresion = (double) Files.size(Paths.get(direccion))
+						/ (double) Files.size(Paths.get(nombre + ".huf"));
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public static void descomprimr(String direccion, String nombre)
+	public void descomprimr(String direccion, String nombre)
 	{
 		BufferedWriter writer = null;
 		ObjectInputStream ois = null;
@@ -180,7 +252,7 @@ public class Huffman
 							codigo = codigo + "1";
 						else
 							codigo = codigo + "0";
-						int simbolo = Huffman.buscaCodigo(diccionario, codigo);
+						int simbolo = this.buscaCodigo(diccionario, codigo);
 						if (simbolo != -1)
 						{ // lo encontre y tengo que escribirlo
 							writer.write((char) simbolo);
@@ -226,7 +298,7 @@ public class Huffman
 		}
 	}
 
-	private static int buscaCodigo(HashMap<Integer, String> diccionario, String codigo)
+	private int buscaCodigo(HashMap<Integer, String> diccionario, String codigo)
 	{
 
 		int simbolo = -1; // retorna -1 si no lo encuentra
