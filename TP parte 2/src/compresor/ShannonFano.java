@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.BitSet;
@@ -18,7 +19,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import archivo.LeeArchivo;
+import utilidades.LeeArchivo;
 
 public class ShannonFano
 {
@@ -27,15 +28,14 @@ public class ShannonFano
 	private double entropia;
 	private double longitudMedia;
 	private double tasaCompresion;
-	
-	
+
 	public ShannonFano()
 	{
 		this.entropia = 0;
 		this.longitudMedia = 0;
 		this.tasaCompresion = 0;
 	}
-	
+
 	/**
 	 * @return the diccionario
 	 */
@@ -86,9 +86,10 @@ public class ShannonFano
 		return 1 - this.getRendimiento();
 	}
 
-	private void cearDiccionario(String direccion)
+	private void cearDiccionario(String direccion) throws FileNotFoundException, IOException
 	{
-		NodoShannonFano[] vectorNodos = this.creaVectorNodos(LeeArchivo.obtenerFrecuencia(direccion,this.probabilidadAcumulada));
+		NodoShannonFano[] vectorNodos = this
+				.creaVectorNodos(LeeArchivo.obtenerFrecuencia(direccion, this.probabilidadAcumulada));
 		this.BubbleSort(vectorNodos, vectorNodos.length);
 		this.generaDiccionario(vectorNodos);
 	}
@@ -134,27 +135,28 @@ public class ShannonFano
 
 	private void generaDiccionario(NodoShannonFano[] vectorNodos)
 	{
-		this.generaDiccionarioRecursividad(vectorNodos, this.probabilidadAcumulada, 0,
-				vectorNodos.length - 1, "");
+		this.generaDiccionarioRecursividad(vectorNodos, this.probabilidadAcumulada, 0, vectorNodos.length - 1, "");
 	}
 
-	private void generaDiccionarioRecursividad(NodoShannonFano[] vectorNodos, int[] probabilidadAcumulada, int limiteIzq, int limiteDer, String binario)
+	private void generaDiccionarioRecursividad(NodoShannonFano[] vectorNodos, int[] probabilidadAcumulada,
+			int limiteIzq, int limiteDer, String binario)
 	{
 		if (limiteIzq == limiteDer) // caso base
 		{
 			this.diccionario.put(vectorNodos[limiteIzq].getSimbolo(), binario);
-			double probabilidad = (double) vectorNodos[limiteIzq].getFrecuencia() / (double) this.probabilidadAcumulada[0];
+			double probabilidad = (double) vectorNodos[limiteIzq].getFrecuencia()
+					/ (double) this.probabilidadAcumulada[0];
 			this.entropia += probabilidad * (-1) * Math.log(probabilidad) / Math.log(2);
 			this.longitudMedia += probabilidad * binario.length();
 		} else
 		{
 			int[] frecuenciaIzq = new int[1];
 			int[] frecuenciaDer = new int[1];
-			int mitad = this.obtenerMitadVectorNodos(vectorNodos, limiteIzq, limiteDer, probabilidadAcumulada[0], frecuenciaIzq,
-					frecuenciaDer);
-			
-			this.generaDiccionarioRecursividad(vectorNodos, frecuenciaIzq, limiteIzq, mitad, binario+"1");
-			this.generaDiccionarioRecursividad(vectorNodos, frecuenciaDer, mitad+1, limiteDer, binario+"0");
+			int mitad = this.obtenerMitadVectorNodos(vectorNodos, limiteIzq, limiteDer, probabilidadAcumulada[0],
+					frecuenciaIzq, frecuenciaDer);
+
+			this.generaDiccionarioRecursividad(vectorNodos, frecuenciaIzq, limiteIzq, mitad, binario + "1");
+			this.generaDiccionarioRecursividad(vectorNodos, frecuenciaDer, mitad + 1, limiteDer, binario + "0");
 		}
 
 		return;
@@ -187,22 +189,24 @@ public class ShannonFano
 		{
 			i++;
 			frecuenciaIzq[0] += vectorNodos[i].getFrecuencia();
-			
+
 		}
 		frecuenciaDer[0] = frecuenciaAcumulada - frecuenciaIzq[0];
-		
+
 		return i;
 	}
 
-	public void comprimir(String direccion, String nombre)
+	public void comprimir(String direccionOrigen, String direccionDestino, String nombre)
+			throws FileNotFoundException, IOException
 	{
 
 		BufferedReader reader = null;
 		BitSet bs = new BitSet();
-		this.cearDiccionario(direccion);
+
 		try
 		{
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(direccion), "UTF-8"));
+			this.cearDiccionario(direccionOrigen);
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(direccionOrigen), "UTF-8"));
 			int caracter = reader.read();
 			int bitActual = 0;
 			String codigo;
@@ -216,50 +220,39 @@ public class ShannonFano
 				}
 				caracter = reader.read();
 			}
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nombre + ".Shn"));
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(direccionDestino + nombre + ".Shn"));
 			oos.writeObject(this.diccionario);
 			oos.writeObject(bs);
 			oos.close();
+			this.tasaCompresion = (double) Files.size(Paths.get(direccionOrigen))
+					/ (double) Files.size(Paths.get(nombre + ".Shn"));
 
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
 		} finally
 		{
 			if (reader != null)
 			{
-				try
-				{
-					reader.close();
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+
+				reader.close();
+
 			}
-			try
-			{
-				this.tasaCompresion = (double) Files.size(Paths.get(direccion))
-						/ (double) Files.size(Paths.get(nombre + ".Shn"));
-			} catch (IOException e)
-			{
-				e.printStackTrace();
-			}
+
+
+
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public void descomprimr(String direccion, String nombre)
+	public void descomprimr(String direccionOrigen, String direccionDestino, String nombre)
+			throws IOException, FileNotFoundException
 	{
 		BufferedWriter writer = null;
 		ObjectInputStream ois = null;
 		BitSet bs;
 		try
 		{
-			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(nombre + ".txt"), "UTF-8"));
-			ois = new ObjectInputStream(new FileInputStream(direccion));
+			writer = new BufferedWriter(
+					new OutputStreamWriter(new FileOutputStream(direccionDestino + nombre + ".txt"), "UTF-8"));
+			ois = new ObjectInputStream(new FileInputStream(direccionOrigen));
 			Object aux = ois.readObject();
 			if (aux instanceof HashMap<?, ?>)
 			{
@@ -288,12 +281,6 @@ public class ShannonFano
 
 			}
 
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
 		} catch (ClassNotFoundException e)
 		{
 			e.printStackTrace();
@@ -301,23 +288,15 @@ public class ShannonFano
 		{
 			if (ois != null)
 			{
-				try
-				{
-					ois.close();
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+
+				ois.close();
+
 			}
 			if (writer != null)
 			{
-				try
-				{
-					writer.close();
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+
+				writer.close();
+
 			}
 		}
 	}

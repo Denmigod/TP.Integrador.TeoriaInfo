@@ -8,10 +8,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 
 public class RLC
 {
-	public static void comprimir(String direccionOrigen, String direccionDestino, String nombre)
+	public static void comprimir(String direccionOrigen, String direccionDestino, String nombre) throws IOException, FileNotFoundException
 	{
 
 		BufferedReader reader = null;
@@ -47,39 +48,25 @@ public class RLC
 
 			}
 
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
 		} finally
 		{
 			if (reader != null)
 			{
-				try
-				{
+				
 					reader.close();
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+				
 			}
 			if (writer != null)
 			{
-				try
-				{
+				
 					writer.close();
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+				
 			}
 		}
 
 	}
 
-	public static void descomprimir(String direccionOrigen, String direccionDestino, String nombre)
+	public static void descomprimir(String direccionOrigen, String direccionDestino, String nombre) throws IOException, FileNotFoundException
 	{
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
@@ -116,33 +103,18 @@ public class RLC
 				}
 			}
 
-		} catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		} catch (IOException e)
-		{
-			e.printStackTrace();
 		} finally
 		{
 			if (reader != null)
 			{
-				try
-				{
-					reader.close();
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+				reader.close();
+
 			}
 			if (writer != null)
 			{
-				try
-				{
-					writer.close();
-				} catch (IOException e)
-				{
-					e.printStackTrace();
-				}
+
+				writer.close();
+
 			}
 		}
 	}
