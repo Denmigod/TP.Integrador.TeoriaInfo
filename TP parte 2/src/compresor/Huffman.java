@@ -171,15 +171,15 @@ public class Huffman
 		return;
 	}
 
-	public void comprimir(String direccion, String nombre)
+	public void comprimir(String direccionOrigen, String direccionDestino, String nombre)
 	{
 
 		BufferedReader reader = null;
 		BitSet bs = new BitSet();
-		this.cearDiccionario(direccion);
+		this.cearDiccionario(direccionOrigen);
 		try
 		{
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(direccion), "UTF-8"));
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(direccionOrigen), "UTF-8"));
 			int caracter = reader.read();
 			int bitActual = 0;
 			String codigo;
@@ -193,7 +193,7 @@ public class Huffman
 				}
 				caracter = reader.read();
 			}
-			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(nombre + ".huf"));
+			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(direccionDestino + nombre + ".huf"));
 			oos.writeObject(diccionario);
 			oos.writeObject(bs);
 			oos.close();
@@ -217,7 +217,7 @@ public class Huffman
 			}
 			try
 			{
-				this.tasaCompresion = (double) Files.size(Paths.get(direccion))
+				this.tasaCompresion = (double) Files.size(Paths.get(direccionOrigen))
 						/ (double) Files.size(Paths.get(nombre + ".huf"));
 			} catch (IOException e)
 			{
@@ -227,15 +227,16 @@ public class Huffman
 	}
 
 	@SuppressWarnings("unchecked")
-	public void descomprimr(String direccion, String nombre)
+	public void descomprimr(String direccionOrigen, String direccionDestino, String nombre)
 	{
 		BufferedWriter writer = null;
 		ObjectInputStream ois = null;
 		BitSet bs;
 		try
 		{
-			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(nombre + ".txt"), "UTF-8"));
-			ois = new ObjectInputStream(new FileInputStream(direccion));
+			writer = new BufferedWriter(
+					new OutputStreamWriter(new FileOutputStream(direccionDestino + nombre + ".txt"), "UTF-8"));
+			ois = new ObjectInputStream(new FileInputStream(direccionOrigen));
 			Object aux = ois.readObject();
 			if (aux instanceof HashMap<?, ?>)
 			{

@@ -11,15 +11,16 @@ import java.io.OutputStreamWriter;
 
 public class RLC
 {
-	public static void comprimir(String direccion, String nombre)
+	public static void comprimir(String direccionOrigen, String direccionDestino, String nombre)
 	{
 
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
 		try
 		{
-			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(nombre + ".rlc"), "UTF-8"));
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(direccion), "UTF-8"));
+			writer = new BufferedWriter(
+					new OutputStreamWriter(new FileOutputStream(direccionDestino + nombre + ".rlc"), "UTF-8"));
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(direccionOrigen), "UTF-8"));
 			int caracterAnterior = reader.read();
 			int caracter;
 
@@ -43,7 +44,7 @@ public class RLC
 					caracterAnterior = caracter;
 					acumulador = 1;
 				}
-				
+
 			}
 
 		} catch (FileNotFoundException e)
@@ -78,14 +79,15 @@ public class RLC
 
 	}
 
-	public static void descomprimir(String direccion, String nombre)
+	public static void descomprimir(String direccionOrigen, String direccionDestino, String nombre)
 	{
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
 		try
 		{
-			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(nombre + ".txt"), "UTF-8"));
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(direccion), "UTF-8"));
+			writer = new BufferedWriter(
+					new OutputStreamWriter(new FileOutputStream(direccionDestino + nombre + ".txt"), "UTF-8"));
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(direccionOrigen), "UTF-8"));
 
 			int charCantidad;
 			int caracter = reader.read();
