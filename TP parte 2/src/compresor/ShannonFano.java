@@ -10,7 +10,6 @@ import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.BitSet;
@@ -21,7 +20,7 @@ import java.util.Map.Entry;
 
 import utilidades.LeeArchivo;
 
-public class ShannonFano
+public class ShannonFano implements ICompresor
 {
 	private HashMap<Integer, String> diccionario = new HashMap<Integer, String>();
 	private int[] probabilidadAcumulada = new int[1];
@@ -242,7 +241,7 @@ public class ShannonFano
 	}
 
 	@SuppressWarnings("unchecked")
-	public void descomprimr(String direccionOrigen, String direccionDestino, String nombre)
+	public void descomprimir(String direccionOrigen, String direccionDestino, String nombre)
 			throws IOException, FileNotFoundException
 	{
 		BufferedWriter writer = null;
@@ -320,4 +319,5 @@ public class ShannonFano
 		}
 		return simbolo;
 	}
+
 }

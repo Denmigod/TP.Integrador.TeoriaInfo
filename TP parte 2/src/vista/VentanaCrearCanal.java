@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 
-public class ventanaCrearCanal extends JFrame implements KeyListener
+public class VentanaCrearCanal extends JFrame implements KeyListener
 {
 	private JFrame frame;
 	private JPanel contentPane;
@@ -34,7 +34,7 @@ public class ventanaCrearCanal extends JFrame implements KeyListener
 	/**
 	 * Create the frame.
 	 */
-	public ventanaCrearCanal()
+	public VentanaCrearCanal()
 	{
 		this.frame = new JFrame("Crear canal");
 		this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -42,7 +42,7 @@ public class ventanaCrearCanal extends JFrame implements KeyListener
 		this.contentPane = new JPanel();
 
 		this.panel = new JPanel();
-		this.frame.getContentPane().add(this.panel, BorderLayout.CENTER);
+		getContentPane().add(this.panel, BorderLayout.CENTER);
 		this.panel.setLayout(new GridLayout(3, 0, 0, 0));
 
 		this.panel_3 = new JPanel();
@@ -56,6 +56,7 @@ public class ventanaCrearCanal extends JFrame implements KeyListener
 		this.panel_2.add(this.lblEntradas);
 
 		this.textFieldEntradas = new JTextField();
+		this.textFieldEntradas.addKeyListener(this);
 		this.panel_2.add(this.textFieldEntradas);
 		this.textFieldEntradas.setColumns(10);
 
@@ -63,6 +64,7 @@ public class ventanaCrearCanal extends JFrame implements KeyListener
 		this.panel_2.add(this.lblSalidas);
 
 		this.textFieldSalidas = new JTextField();
+		this.textFieldSalidas.addKeyListener(this);
 		this.panel_2.add(this.textFieldSalidas);
 		this.textFieldSalidas.setColumns(10);
 

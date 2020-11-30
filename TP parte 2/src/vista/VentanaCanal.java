@@ -25,7 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 
-public class ventanaCanal extends JFrame
+public class VentanaCanal extends JFrame
 {
 
 	private JFrame frame;
@@ -47,7 +47,7 @@ public class ventanaCanal extends JFrame
 	/**
 	 * Create the frame.
 	 */
-	public ventanaCanal()
+	public VentanaCanal()
 	{
 		this.frame = new JFrame("Markov");
 		this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

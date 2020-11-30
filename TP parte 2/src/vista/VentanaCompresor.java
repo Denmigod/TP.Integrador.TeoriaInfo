@@ -24,7 +24,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 
-public class ventanaCompresor extends JFrame implements KeyListener
+public class VentanaCompresor extends JFrame implements KeyListener
 {
 	private JFrame frame;
 	private JPanel contentPane;
@@ -60,11 +60,12 @@ public class ventanaCompresor extends JFrame implements KeyListener
 	private JPanel panel_16;
 	private JLabel lblNombreSalida;
 	private JTextField textFieldNombreSalida;
+	private JButton btnDescomprimir;
 
 	/**
 	 * Create the frame.
 	 */
-	public ventanaCompresor()
+	public VentanaCompresor()
 	{
 		this.frame = new JFrame("Compresor");
 		this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -90,6 +91,7 @@ public class ventanaCompresor extends JFrame implements KeyListener
 		this.panel_5.add(this.lblDireccionEntrada, "cell 1 1");
 
 		this.textFieldOrigen = new JTextField();
+		this.textFieldOrigen.addKeyListener(this);
 		this.panel_5.add(this.textFieldOrigen, "cell 4 1 3 1,growx");
 		this.textFieldOrigen.setColumns(10);
 
@@ -103,15 +105,16 @@ public class ventanaCompresor extends JFrame implements KeyListener
 		this.textFieldDestino = new JTextField();
 		this.textFieldDestino.setColumns(10);
 		this.panel_4.add(this.textFieldDestino, "cell 4 2 2 1,growx");
-		
+
 		this.panel_16 = new JPanel();
 		this.panel_2.add(this.panel_16);
 		this.panel_16.setLayout(new MigLayout("", "[][110.00][][][grow]", "[][]"));
-		
+
 		this.lblNombreSalida = new JLabel("Nombre archivo salida:");
 		this.panel_16.add(this.lblNombreSalida, "cell 1 1");
-		
+
 		this.textFieldNombreSalida = new JTextField();
+		this.textFieldNombreSalida.addKeyListener(this);
 		this.textFieldNombreSalida.setColumns(10);
 		this.panel_16.add(this.textFieldNombreSalida, "cell 4 1,growx");
 
@@ -157,6 +160,12 @@ public class ventanaCompresor extends JFrame implements KeyListener
 
 		this.panel_10 = new JPanel();
 		this.panel_7.add(this.panel_10);
+		this.panel_10.setLayout(new BoxLayout(this.panel_10, BoxLayout.X_AXIS));
+
+		this.btnDescomprimir = new JButton("Descomprimir");
+		this.btnDescomprimir.setEnabled(false);
+		this.btnDescomprimir.setActionCommand("DESCOMPRIMIR");
+		this.panel_10.add(this.btnDescomprimir);
 
 		this.panel_9 = new JPanel();
 		this.panel_3.add(this.panel_9);
@@ -194,8 +203,11 @@ public class ventanaCompresor extends JFrame implements KeyListener
 	@Override
 	public void keyReleased(KeyEvent arg0)
 	{
-		this.btnComprimir
-				.setEnabled(!this.textFieldOrigen.getText().isEmpty() && !this.textFieldNombreSalida.getText().isEmpty());
+		this.btnComprimir.setEnabled(
+				!this.textFieldOrigen.getText().isEmpty() && !this.textFieldNombreSalida.getText().isEmpty());
+		this.btnDescomprimir.setEnabled(
+				!this.textFieldOrigen.getText().isEmpty() && !this.textFieldNombreSalida.getText().isEmpty());
+
 	}
 
 	@Override
@@ -206,6 +218,7 @@ public class ventanaCompresor extends JFrame implements KeyListener
 
 	public void setActionListener(ActionListener actionListener)
 	{
+		this.btnDescomprimir.addActionListener(actionListener);
 		this.btnComprimir.addActionListener(actionListener);
 		this.actionListener = actionListener;
 	}
@@ -219,7 +232,7 @@ public class ventanaCompresor extends JFrame implements KeyListener
 	{
 		return this.textFieldDestino.getText();
 	}
-	
+
 	public String getNombreSalida()
 	{
 		return this.textFieldNombreSalida.getText();
@@ -248,12 +261,12 @@ public class ventanaCompresor extends JFrame implements KeyListener
 
 	public void setRedundancia(String redundancia)
 	{
-		this.lblRendimiento.setText(redundancia);
+		this.lblRedundancia.setText(redundancia);
 	}
 
 	public void setTasaCompresion(String tasaCompresion)
 	{
-		this.lblRendimiento.setText(tasaCompresion);
+		this.lblTasaCompresion.setText(tasaCompresion);
 	}
 
 	/**
@@ -265,5 +278,12 @@ public class ventanaCompresor extends JFrame implements KeyListener
 	public void imprimeMensaje(String mensaje)
 	{
 		JOptionPane.showMessageDialog(this, mensaje);
+	}
+
+	public void limpiaTextFields()
+	{
+		this.textFieldDestino.setText("");
+		this.textFieldNombreSalida.setText("");
+		this.textFieldOrigen.setText("");
 	}
 }

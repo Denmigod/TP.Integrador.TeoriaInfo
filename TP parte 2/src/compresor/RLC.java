@@ -8,11 +8,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 
-public class RLC
+public class RLC implements ICompresor
 {
-	public static void comprimir(String direccionOrigen, String direccionDestino, String nombre) throws IOException, FileNotFoundException
+	public void comprimir(String direccionOrigen, String direccionDestino, String nombre)
+			throws IOException, FileNotFoundException
 	{
 
 		BufferedReader reader = null;
@@ -52,21 +52,22 @@ public class RLC
 		{
 			if (reader != null)
 			{
-				
-					reader.close();
-				
+
+				reader.close();
+
 			}
 			if (writer != null)
 			{
-				
-					writer.close();
-				
+
+				writer.close();
+
 			}
 		}
 
 	}
 
-	public static void descomprimir(String direccionOrigen, String direccionDestino, String nombre) throws IOException, FileNotFoundException
+	public void descomprimir(String direccionOrigen, String direccionDestino, String nombre)
+			throws IOException, FileNotFoundException
 	{
 		BufferedReader reader = null;
 		BufferedWriter writer = null;
@@ -117,5 +118,26 @@ public class RLC
 
 			}
 		}
+	}
+
+	@Override
+	public double getTasaCompresion()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getRendimiento()
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public double getRedundancia()
+	{
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

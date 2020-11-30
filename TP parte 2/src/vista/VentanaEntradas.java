@@ -31,7 +31,7 @@ public class VentanaEntradas extends JFrame
 	/**
 	 * Create the frame.
 	 */
-	public VentanaEntradas(int cantidadSimbolos)
+	public VentanaEntradas(int cantidadEntradas)
 	{
 		this.frame = new JFrame("Entradas");
 		this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -54,9 +54,9 @@ public class VentanaEntradas extends JFrame
 		this.btnAceptar.setActionCommand("ACEPTAR_ENTRADAS");
 		this.panel_3.add(this.btnAceptar);
 
-		this.labelEntradas = new JLabel[cantidadSimbolos];
-		this.textFieldEntradas = new JTextField[cantidadSimbolos];
-		for (int i = 0; i < cantidadSimbolos; i++)
+		this.labelEntradas = new JLabel[cantidadEntradas];
+		this.textFieldEntradas = new JTextField[cantidadEntradas];
+		for (int i = 0; i < cantidadEntradas; i++)
 		{
 			this.labelEntradas[i] = new JLabel("a" + Integer.toString(i + 1) + ":");
 			this.textFieldEntradas[i] = new JTextField();
