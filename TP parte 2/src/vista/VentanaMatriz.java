@@ -29,23 +29,23 @@ public class VentanaMatriz extends JFrame
 	/**
 	 * Create the frame.
 	 */
-	public VentanaMatriz(int cantidadSimbolos)
+	public VentanaMatriz(int entradas, int salidas)
 	{
 		this.frame = new JFrame("Matriz de canal");
 		this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.frame.setBounds(100, 100, 100 * cantidadSimbolos, 50 * cantidadSimbolos + 100);
+		this.frame.setBounds(100, 100, 100 * salidas, 50 * entradas + 100);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.frame.setContentPane(this.contentPane);
-		this.contentPane.setLayout(new GridLayout(cantidadSimbolos + 1, 0, 0, 0));
+		this.contentPane.setLayout(new GridLayout(salidas + 1, 0, 0, 0));
 
-		this.panelFilas = new JPanel[cantidadSimbolos];
-		this.textFieldProbabilidad = new JTextField[cantidadSimbolos][cantidadSimbolos];
-		for (int i = 0; i < cantidadSimbolos; i++)
+		this.panelFilas = new JPanel[entradas];
+		this.textFieldProbabilidad = new JTextField[entradas][salidas];
+		for (int i = 0; i < entradas; i++)
 		{
 			this.panelFilas[i] = new JPanel();
 			this.contentPane.add(this.panelFilas[i]);
-			for (int j = 0; j < cantidadSimbolos; j++)
+			for (int j = 0; j < salidas; j++)
 			{
 				this.textFieldProbabilidad[i][j] = new JTextField();
 				this.panelFilas[i].add(this.textFieldProbabilidad[i][j]);
@@ -77,11 +77,12 @@ public class VentanaMatriz extends JFrame
 
 	public double[][] getMatrizCanal()
 	{
-		int dimension = this.textFieldProbabilidad.length;
-		double[][] probabilidades = new double[dimension][dimension];
-		for (int i = 0; i < dimension; i++)
+		int m = this.textFieldProbabilidad.length;
+		int n = this.textFieldProbabilidad[0].length;
+		double[][] probabilidades = new double[m][n];
+		for (int i = 0; i < m; i++)
 		{
-			for (int j = 0; j < dimension; j++)
+			for (int j = 0; j < n; j++)
 			{
 				probabilidades[i][j] = Double.parseDouble(this.textFieldProbabilidad[i][j].getText().replace(',', '.'));
 			}
@@ -93,10 +94,10 @@ public class VentanaMatriz extends JFrame
 	public boolean validaBotonAceptar()
 	{
 		boolean condicion = true;
-		int i = 0, n = this.textFieldProbabilidad.length;
+		int i = 0, m = this.textFieldProbabilidad.length, n = this.textFieldProbabilidad[0].length;
 		double probabilidad;
 		String simbolo;
-		while (condicion && i < n)
+		while (condicion && i < m)
 		{
 			int j = 0;
 			while (condicion && j < n)

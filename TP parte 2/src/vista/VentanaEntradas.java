@@ -73,6 +73,11 @@ public class VentanaEntradas extends JFrame
 	{
 		this.frame.dispose();
 	}
+	
+	public void ocultar()
+	{
+		this.frame.setVisible(false);
+	}
 
 	public void setActionListener(ActionListener actionListener)
 	{

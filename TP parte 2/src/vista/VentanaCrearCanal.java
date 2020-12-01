@@ -40,9 +40,12 @@ public class VentanaCrearCanal extends JFrame implements KeyListener
 		this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.frame.setBounds(100, 100, 450, 300);
 		this.contentPane = new JPanel();
+		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		this.contentPane.setLayout(new BorderLayout(0, 0));
+		this.frame.setContentPane(this.contentPane);
 
 		this.panel = new JPanel();
-		getContentPane().add(this.panel, BorderLayout.CENTER);
+		this.contentPane.add(this.panel);
 		this.panel.setLayout(new GridLayout(3, 0, 0, 0));
 
 		this.panel_3 = new JPanel();
@@ -75,9 +78,6 @@ public class VentanaCrearCanal extends JFrame implements KeyListener
 		this.btnCrearCanal.setEnabled(false);
 		this.btnCrearCanal.setActionCommand("CREAR");
 		this.panel_1.add(this.btnCrearCanal);
-		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		this.contentPane.setLayout(new BorderLayout(0, 0));
-		this.frame.setContentPane(this.contentPane);
 		this.frame.setVisible(true);
 	}
 
@@ -124,6 +124,12 @@ public class VentanaCrearCanal extends JFrame implements KeyListener
 	public int getSalidas()
 	{
 		return Integer.parseInt(this.textFieldSalidas.getText());
+	}
+
+	public void cerrar()
+	{
+		this.frame.dispose();
+		
 	}
 
 }

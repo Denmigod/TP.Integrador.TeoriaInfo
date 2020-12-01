@@ -95,7 +95,7 @@ public class VentanaCanal extends JFrame
 		this.panel.add(this.panel_2);
 
 		this.btnSalir = new JButton("Salir");
-		this.btnSalir.setActionCommand("Salir");
+		this.btnSalir.setActionCommand("SALIR");
 		this.panel_2.add(this.btnSalir);
 		this.frame.setVisible(true);
 	}
@@ -128,7 +128,7 @@ public class VentanaCanal extends JFrame
 	
 	public void setPropiedadesInformacionMutua(String propiedades)
 	{
-		this.lblEquivocacion.setText("Equivocacion: " + propiedades);
+		this.lblPropiedadesInformacionMutua.setText("Equivocacion: " + propiedades);
 	}
 
 	public void cerrar()

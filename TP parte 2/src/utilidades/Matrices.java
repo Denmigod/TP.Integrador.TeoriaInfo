@@ -82,4 +82,24 @@ public abstract class Matrices
 
 	}
 
+	/**
+	 * Se encarga de mostrar la matriz
+	 * 
+	 * @param mat
+	 */
+	public static String matrizToString(double[] mat)
+	{
+		StringBuilder sb = new StringBuilder();
+
+		for (int x = 0; x < mat.length; x++)
+		{
+
+			sb.append(" " + String.format("%10f", mat[x]) + " |");
+
+		}
+		sb.append("\n");
+		return sb.toString();
+
+	}
+
 }
