@@ -128,7 +128,7 @@ public class VentanaCanal extends JFrame
 	
 	public void setPropiedadesInformacionMutua(String propiedades)
 	{
-		this.lblPropiedadesInformacionMutua.setText("Equivocacion: " + propiedades);
+		this.lblPropiedadesInformacionMutua.setText("Propiedades de la informacion mutua: " + propiedades);
 	}
 
 	public void cerrar()

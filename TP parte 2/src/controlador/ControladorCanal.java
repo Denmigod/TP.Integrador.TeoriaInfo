@@ -45,7 +45,7 @@ public class ControladorCanal implements ActionListener
 				this.ventanaEntradas.imprimeMensaje("Debe llenar todos los campos con probabilidades validas");
 		} else if (comando.equals("ACEPTAR_MATRIZ"))
 		{
-			if (this.ventanaEntradas.validaBotonAceptar())
+			if (this.ventanaMatriz.validaBotonAceptar())
 				this.iniciaCanal();
 			else
 				this.ventanaEntradas.imprimeMensaje("Debe llenar todos los campos con probabilidades validas");

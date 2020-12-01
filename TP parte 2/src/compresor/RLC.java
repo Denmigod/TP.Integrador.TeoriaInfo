@@ -8,9 +8,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class RLC implements ICompresor
 {
+	private double tasaCompresion;
+
+	public RLC()
+	{
+		this.tasaCompresion = 0;
+	}
+
 	public void comprimir(String direccionOrigen, String direccionDestino, String nombre)
 			throws IOException, FileNotFoundException
 	{
@@ -45,22 +54,19 @@ public class RLC implements ICompresor
 					caracterAnterior = caracter;
 					acumulador = 1;
 				}
-
 			}
+			this.tasaCompresion = (double) Files.size(Paths.get(direccionOrigen))
+					/ (double) Files.size(Paths.get(nombre + ".rlc"));
 
 		} finally
 		{
 			if (reader != null)
 			{
-
 				reader.close();
-
 			}
 			if (writer != null)
 			{
-
 				writer.close();
-
 			}
 		}
 
@@ -123,21 +129,18 @@ public class RLC implements ICompresor
 	@Override
 	public double getTasaCompresion()
 	{
-		// TODO Auto-generated method stub
-		return 0;
+		return this.tasaCompresion;
 	}
 
 	@Override
 	public double getRendimiento()
 	{
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
 	public double getRedundancia()
 	{
-		// TODO Auto-generated method stub
 		return 0;
 	}
 }

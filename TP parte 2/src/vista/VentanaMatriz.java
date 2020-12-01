@@ -37,7 +37,7 @@ public class VentanaMatriz extends JFrame
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.frame.setContentPane(this.contentPane);
-		this.contentPane.setLayout(new GridLayout(salidas + 1, 0, 0, 0));
+		this.contentPane.setLayout(new GridLayout(entradas + 1, 0, 0, 0));
 
 		this.panelFilas = new JPanel[entradas];
 		this.textFieldProbabilidad = new JTextField[entradas][salidas];
@@ -84,7 +84,14 @@ public class VentanaMatriz extends JFrame
 		{
 			for (int j = 0; j < n; j++)
 			{
-				probabilidades[i][j] = Double.parseDouble(this.textFieldProbabilidad[i][j].getText().replace(',', '.'));
+				try
+				{
+					probabilidades[i][j] = Double
+							.parseDouble(this.textFieldProbabilidad[i][j].getText().replace(',', '.'));
+				} catch (NumberFormatException e)
+				{
+
+				}
 			}
 		}
 

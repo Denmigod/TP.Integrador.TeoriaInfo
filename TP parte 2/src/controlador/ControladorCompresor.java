@@ -30,10 +30,12 @@ public class ControladorCompresor implements ActionListener
 		{
 			this.comprimir();
 			this.ventana.limpiaTextFields();
+			this.ventana.desactivaBotones();
 		} else if (comando.equals("DESCOMPRIMIR"))
 		{
 			this.descomprimir();
 			this.ventana.limpiaTextFields();
+			this.ventana.desactivaBotones();
 		}
 
 	}
@@ -61,6 +63,7 @@ public class ControladorCompresor implements ActionListener
 		try
 		{
 			this.compresor.descomprimir(origen, destino, nombre);
+			this.ventana.imprimeMensaje("El archivo se descomprimio correctamente");
 		} catch (FileNotFoundException e)
 		{
 			this.ventana.imprimeMensaje(e.getMessage());
@@ -95,6 +98,7 @@ public class ControladorCompresor implements ActionListener
 			this.ventana.setRedundancia("Redundancia: " + this.compresor.getRedundancia());
 			this.ventana.setRendimiento("Rendimiento: " + this.compresor.getRendimiento());
 			this.ventana.setTasaCompresion("Tasa de compresion: " + this.compresor.getTasaCompresion());
+			this.ventana.imprimeMensaje("El archivo se comprimio correctamente");
 		} catch (FileNotFoundException e)
 		{
 			this.ventana.imprimeMensaje(e.getMessage());

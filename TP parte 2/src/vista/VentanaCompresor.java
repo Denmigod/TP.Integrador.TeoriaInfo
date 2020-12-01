@@ -286,4 +286,11 @@ public class VentanaCompresor extends JFrame implements KeyListener
 		this.textFieldNombreSalida.setText("");
 		this.textFieldOrigen.setText("");
 	}
+
+	public void desactivaBotones()
+	{
+		this.btnComprimir.setEnabled(false);
+		this.btnDescomprimir.setEnabled(false);
+
+	}
 }
