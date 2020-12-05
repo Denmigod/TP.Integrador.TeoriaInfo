@@ -7,6 +7,10 @@ public class NodoArbolHuffman
 	private int Simbolo;
 	private int frecuencia;
 
+	/**
+	 * @param simbolo: numero entero que representa al simbolo segun la tabla ascii o -1 si no contiene un simbolo (no es hoja en el arbol)
+	 * @param frecuencia: frecuencia relativa al total de simbolos de aparicion del mismo en el archivo
+	 */
 	public NodoArbolHuffman(int simbolo, int frecuencia)
 	{
 		Simbolo = simbolo;
