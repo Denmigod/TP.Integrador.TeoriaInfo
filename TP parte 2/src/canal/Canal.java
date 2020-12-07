@@ -18,6 +18,30 @@ public class Canal
 	}
 
 	/**
+	 * @return the probabilidadSalida
+	 */
+	public double[] getProbabilidadSalida()
+	{
+		return probabilidadSalida;
+	}
+
+	/**
+	 * @return the probabilidadPosteriori
+	 */
+	public double[][] getProbabilidadPosteriori()
+	{
+		return probabilidadPosteriori;
+	}
+
+	/**
+	 * @return the entropiaPosteriori
+	 */
+	public double[] getEntropiaPosteriori()
+	{
+		return entropiaPosteriori;
+	}
+
+	/**
 	 * @return the probabilidadesAPriori
 	 */
 	public double[] getProbabilidadesAPriori()
@@ -58,8 +82,15 @@ public class Canal
 		{
 			for (int i = 0; i < m; i++)
 			{
-				this.probabilidadPosteriori[i][j] = this.canal[i][j] * this.probabilidadPriori[i]
-						/ this.probabilidadSalida[j];
+				if (this.probabilidadSalida[j] == 0)
+				{
+					this.probabilidadPosteriori[i][j] = 0;
+				} else
+				{
+					this.probabilidadPosteriori[i][j] = this.canal[i][j] * this.probabilidadPriori[i]
+							/ this.probabilidadSalida[j];
+				}
+
 			}
 		}
 
@@ -152,8 +183,7 @@ public class Canal
 
 	public boolean informacionMutuaIsSimetrica()
 	{
-		return this.getEquivocacion() == this.getEntropiaPriori()
-				- this.getInformacionMutua();
+		return this.getEquivocacion() == this.getEntropiaPriori() - this.getInformacionMutua();
 	}
 
 	public boolean informacionMutuaIsMayorIgualCero()

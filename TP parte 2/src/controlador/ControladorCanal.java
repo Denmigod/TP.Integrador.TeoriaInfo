@@ -84,7 +84,8 @@ public class ControladorCanal implements ActionListener
 		this.ventana.setPropiedadesInformacionMutua(propiedades);
 		this.ventana
 				.setTextPane("Vector de entradas:\n" + Matrices.matrizToString(this.canal.getProbabilidadesAPriori())
-						+ "Matriz del canal:\n" + Matrices.matrizToString(this.canal.getCanal()));
+						+ "Matriz del canal:\n" + Matrices.matrizToString(this.canal.getCanal()) + "\nH(A) = "
+						+ this.canal.getEntropiaPriori() + "\nH(A/b): \n" + Matrices.matrizToString(this.canal.getEntropiaPosteriori()));
 	}
 
 	private void cargarMatriz()
