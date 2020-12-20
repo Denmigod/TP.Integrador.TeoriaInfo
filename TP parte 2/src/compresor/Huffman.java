@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,6 +24,7 @@ import utilidades.LeeArchivo;
 public class Huffman implements ICompresor
 {
 	private HashMap<Integer, String> diccionario = new HashMap<Integer, String>();
+	private ArrayList<nodoListaCodificacion> listaCodificacion = new ArrayList<nodoListaCodificacion>();
 	private int[] probabilidadAcumulada = new int[1];
 	private double entropia;
 	private double longitudMedia;
@@ -41,6 +43,14 @@ public class Huffman implements ICompresor
 	public HashMap<Integer, String> getDiccionario()
 	{
 		return diccionario;
+	}
+
+	/**
+	 * @return the listaCodificacion
+	 */
+	public ArrayList<nodoListaCodificacion> getListaCodificacion()
+	{
+		return listaCodificacion;
 	}
 
 	/**
@@ -163,6 +173,8 @@ public class Huffman implements ICompresor
 			double probabilidad = (double) arbolHuffman.getFrecuencia() / (double) this.probabilidadAcumulada[0];
 			this.entropia += probabilidad * (-1) * Math.log(probabilidad) / Math.log(2);
 			this.longitudMedia += probabilidad * binario.length();
+			this.listaCodificacion
+					.add(new nodoListaCodificacion(arbolHuffman.getSimbolo(), probabilidad, binario));
 		} else // voy izq y derecha
 		{
 			this.generaDiccionario(arbolHuffman.getHijoIzquierda(), binario + "0");

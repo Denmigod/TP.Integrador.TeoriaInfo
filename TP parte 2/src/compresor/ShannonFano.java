@@ -12,6 +12,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -23,6 +24,7 @@ import utilidades.LeeArchivo;
 public class ShannonFano implements ICompresor
 {
 	private HashMap<Integer, String> diccionario = new HashMap<Integer, String>();
+	private ArrayList<nodoListaCodificacion> listaCodificacion = new ArrayList<nodoListaCodificacion>();
 	private int[] probabilidadAcumulada = new int[1];
 	private double entropia;
 	private double longitudMedia;
@@ -33,6 +35,14 @@ public class ShannonFano implements ICompresor
 		this.entropia = 0;
 		this.longitudMedia = 0;
 		this.tasaCompresion = 0;
+	}
+
+	/**
+	 * @return the listaCodificacion
+	 */
+	public ArrayList<nodoListaCodificacion> getListaCodificacion()
+	{
+		return listaCodificacion;
 	}
 
 	/**
@@ -147,6 +157,8 @@ public class ShannonFano implements ICompresor
 					/ (double) this.probabilidadAcumulada[0];
 			this.entropia += probabilidad * (-1) * Math.log(probabilidad) / Math.log(2);
 			this.longitudMedia += probabilidad * binario.length();
+			this.listaCodificacion
+					.add(new nodoListaCodificacion(vectorNodos[limiteIzq].getSimbolo(), probabilidad, binario));
 		} else
 		{
 			int[] frecuenciaIzq = new int[1];
@@ -234,8 +246,6 @@ public class ShannonFano implements ICompresor
 				reader.close();
 
 			}
-
-
 
 		}
 	}

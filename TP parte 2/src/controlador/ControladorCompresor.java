@@ -9,6 +9,7 @@ import compresor.Huffman;
 import compresor.ICompresor;
 import compresor.RLC;
 import compresor.ShannonFano;
+import vista.VentanaCodificacion;
 import vista.VentanaCompresor;
 
 public class ControladorCompresor implements ActionListener
@@ -28,7 +29,7 @@ public class ControladorCompresor implements ActionListener
 		String comando = e.getActionCommand();
 		if (comando.equals("COMPRIMIR"))
 		{
-			this.comprimir();
+			this.botonComprimir();
 			this.ventana.limpiaTextFields();
 			this.ventana.desactivaBotones();
 		} else if (comando.equals("DESCOMPRIMIR"))
@@ -74,24 +75,34 @@ public class ControladorCompresor implements ActionListener
 
 	}
 
-	private void comprimir()
+	private void botonComprimir()
 	{
-		String origen = this.ventana.getOrigen();
-		String destino = this.ventana.getDestino();
-		String nombre = this.ventana.getNombreSalida();
+
 		String tipo = this.ventana.getTipoCompresion();
 
 		if (tipo.equals("HUFFMAN"))
 		{
 			this.compresor = new Huffman();
+			this.comprimir();
+			new VentanaCodificacion("HUFFMAN").actualizaLista(compresor.getListaCodificacion());
 		} else if (tipo.equals("SHANNON-FANO"))
 		{
 			this.compresor = new ShannonFano();
+			this.comprimir();
+			new VentanaCodificacion("SHANNON-FANO").actualizaLista(compresor.getListaCodificacion());
 		} else if (tipo.equals("RLC"))
 		{
 			this.compresor = new RLC();
+			this.comprimir();
 		}
 
+	}
+
+	private void comprimir()
+	{
+		String origen = this.ventana.getOrigen();
+		String destino = this.ventana.getDestino();
+		String nombre = this.ventana.getNombreSalida();
 		try
 		{
 			this.compresor.comprimir(origen, destino, nombre);
@@ -99,6 +110,7 @@ public class ControladorCompresor implements ActionListener
 			this.ventana.setRendimiento("Rendimiento: " + this.compresor.getRendimiento());
 			this.ventana.setTasaCompresion("Tasa de compresion: " + this.compresor.getTasaCompresion());
 			this.ventana.imprimeMensaje("El archivo se comprimio correctamente");
+
 		} catch (FileNotFoundException e)
 		{
 			this.ventana.imprimeMensaje(e.getMessage());
@@ -106,7 +118,6 @@ public class ControladorCompresor implements ActionListener
 		{
 			// se supone que nunca entra en esta excepcion
 		}
-
 	}
 
 }

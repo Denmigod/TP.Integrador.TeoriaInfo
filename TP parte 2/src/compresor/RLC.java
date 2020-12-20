@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class RLC implements ICompresor
 {
@@ -142,5 +143,12 @@ public class RLC implements ICompresor
 	public double getRedundancia()
 	{
 		return 0;
+	}
+
+	@Override
+	public ArrayList<nodoListaCodificacion> getListaCodificacion()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
