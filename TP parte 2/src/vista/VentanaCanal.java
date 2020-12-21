@@ -49,9 +49,9 @@ public class VentanaCanal extends JFrame
 	 */
 	public VentanaCanal()
 	{
-		this.frame = new JFrame("Markov");
+		this.frame = new JFrame("Canal");
 		this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.frame.setBounds(100, 100, 585, 411);
+		this.frame.setBounds(100, 100, 588, 774);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.frame.setContentPane(this.contentPane);

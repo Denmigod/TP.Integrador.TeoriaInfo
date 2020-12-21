@@ -1,5 +1,7 @@
 package canal;
 
+import utilidades.Matrices;
+
 public class Canal
 {
 	private double[] probabilidadPriori;
@@ -7,6 +9,7 @@ public class Canal
 	private double[] probabilidadSalida;
 	private double[][] probabilidadPosteriori;
 	private double[] entropiaPosteriori;
+	private double[][] probabilidadesSimultaneas;
 
 	public Canal(double[] probabilidadesAPriori, double[][] canal)
 	{
@@ -15,6 +18,23 @@ public class Canal
 		this.calculaProbabilidadSalida();
 		this.calculaProbabilidadPosteriori();
 		this.calculaEntropiaPosteriori();
+		this.calculaProbabilidadesSimultaneas();
+	}
+
+	/**
+	 * @return the probabilidadPriori
+	 */
+	public double[] getProbabilidadPriori()
+	{
+		return probabilidadPriori;
+	}
+
+	/**
+	 * @param probabilidadesSimultaneas the probabilidadesSimultaneas to set
+	 */
+	public void setProbabilidadesSimultaneas(double[][] probabilidadesSimultaneas)
+	{
+		this.probabilidadesSimultaneas = probabilidadesSimultaneas;
 	}
 
 	/**
@@ -96,6 +116,18 @@ public class Canal
 
 	}
 
+	public void calculaProbabilidadesSimultaneas() // nuevo
+	{
+		this.probabilidadesSimultaneas = new double[this.probabilidadPriori.length][this.canal[0].length];
+		for (int i = 0; i < this.probabilidadPriori.length; i++)
+		{
+			for (int j = 0; j < this.canal[0].length; j++)
+			{
+				this.probabilidadesSimultaneas[i][j] = this.probabilidadPriori[i] * this.canal[i][j];
+			}
+		}
+	}
+
 	private void calculaEntropiaPosteriori()
 	{
 		int m = this.canal.length;
@@ -164,7 +196,22 @@ public class Canal
 		return entropia;
 	}
 
-	public double getEquivocacion()
+	public double getEntropiaAfin() // nuevo
+	{
+		double entropia = 0;
+		for (int i = 0; i < this.probabilidadesSimultaneas.length; i++)
+		{
+			for (int j = 0; j < this.probabilidadesSimultaneas[0].length; j++)
+			{
+				if (this.probabilidadesSimultaneas[i][j] != 0)
+					entropia += this.probabilidadesSimultaneas[i][j]
+							* Math.abs(-Math.log(this.probabilidadesSimultaneas[i][j]) / Math.log(2));
+			}
+		}
+		return entropia;
+	}
+
+	public double getEquivocacionEntrada()
 	{
 		double equivocacion = 0;
 		int n = this.canal[0].length;
@@ -176,19 +223,72 @@ public class Canal
 		return equivocacion;
 	}
 
+	public double getEquivocacionSalida() // nuevo
+	{
+		double entropia = 0;
+		for (int i = 0; i < this.probabilidadesSimultaneas.length; i++)
+		{
+			for (int j = 0; j < this.probabilidadesSimultaneas[0].length; j++)
+			{
+				if (this.canal[i][j] != 0)
+					entropia += this.probabilidadesSimultaneas[i][j]
+							* Math.abs(-Math.log(this.canal[i][j]) / Math.log(2));
+			}
+		}
+		return entropia;
+	}
+
 	public double getInformacionMutua()
 	{
-		return this.getEntropiaPriori() - this.getEquivocacion();
+		return this.getEntropiaPriori() - this.getEquivocacionEntrada();
+	}
+
+	public double getInformacionMutuaInversa()
+	{
+		return this.getEntropiaSalida() - this.getEquivocacionSalida();
 	}
 
 	public boolean informacionMutuaIsSimetrica()
 	{
-		return this.getEquivocacion() == this.getEntropiaPriori() - this.getInformacionMutua();
+		return this.getEquivocacionEntrada() == this.getEntropiaPriori() - this.getInformacionMutua();
+
 	}
 
 	public boolean informacionMutuaIsMayorIgualCero()
 	{
 		return this.getInformacionMutua() >= 0;
+	}
+
+	public String muestraCanal()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append("Vector de entradas:\n" + Matrices.matrizToString(this.getProbabilidadesAPriori()));
+		sb.append("\n");
+		sb.append("Matriz del canal:\n" + Matrices.matrizToString(this.getCanal()));
+		sb.append("\n");
+		sb.append("P(bj):\n" + Matrices.matrizToString(this.probabilidadSalida));
+		sb.append("\n");
+		sb.append("P(ai/bj):\n" + Matrices.matrizToString(this.probabilidadPosteriori));
+		sb.append("\n");
+		sb.append("P(a,b):\n" + Matrices.matrizToString(this.probabilidadesSimultaneas));
+		sb.append("\n");
+		sb.append("H(A/b):\n" + Matrices.matrizToString(this.entropiaPosteriori));
+		sb.append("\n");
+		sb.append("H(A):\n" + String.format("%.5f", this.getEntropiaPriori()) + "\n");
+		sb.append("\n");
+		sb.append("H(B):\n" + String.format("%.5f", this.getEntropiaSalida()) + "\n");
+		sb.append("\n");
+		sb.append("H(A/B):\n" + String.format("%.5f", this.getEquivocacionEntrada()) + "\n");
+		sb.append("\n");
+		sb.append("H(B/A):\n" + String.format("%.5f", this.getEquivocacionSalida()) + "\n");
+		sb.append("\n");
+		sb.append("I(A,B):\n" + String.format("%.5f", this.getInformacionMutua()) + "\n");
+		sb.append("\n");
+		sb.append("I(B,A):\n" + String.format("%.5f", this.getInformacionMutuaInversa()) + "\n");
+		sb.append("\n");
+		sb.append("H(A,B):\n" + String.format("%.5f", this.getEntropiaAfin()) + "\n");
+
+		return sb.toString();
 	}
 
 }

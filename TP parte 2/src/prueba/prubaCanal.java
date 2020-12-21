@@ -26,7 +26,7 @@ public class prubaCanal
 		 */
 		canal = new Canal(probabilidad, matrizCanal);
 
-		System.out.println("Equivocacion = " + canal.getEquivocacion());
+		System.out.println("Equivocacion = " + canal.getEquivocacionEntrada());
 		System.out.println("Informacion Mutua = " + canal.getInformacionMutua());
 		System.out.println("Es simetrica? " + canal.informacionMutuaIsSimetrica());
 		System.out.println("Es mayor a 0? "+canal.informacionMutuaIsMayorIgualCero());

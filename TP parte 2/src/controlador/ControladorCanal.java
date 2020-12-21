@@ -64,7 +64,7 @@ public class ControladorCanal implements ActionListener
 		this.ventanaMatriz.cerrar();
 		this.ventana = new VentanaCanal();
 		this.ventana.setActionListener(this);
-		this.ventana.setEquivoacion(this.canal.getEquivocacion());
+		this.ventana.setEquivoacion(this.canal.getEquivocacionEntrada());
 		this.ventana.setInformacionMutua(this.canal.getInformacionMutua());
 		String propiedades = "";
 		if (this.canal.informacionMutuaIsSimetrica())
@@ -82,10 +82,7 @@ public class ControladorCanal implements ActionListener
 			propiedades += " y no es mayor/igual a cero";
 		}
 		this.ventana.setPropiedadesInformacionMutua(propiedades);
-		this.ventana
-				.setTextPane("Vector de entradas:\n" + Matrices.matrizToString(this.canal.getProbabilidadesAPriori())
-						+ "Matriz del canal:\n" + Matrices.matrizToString(this.canal.getCanal()) + "\nH(A) = "
-						+ this.canal.getEntropiaPriori() + "\nH(A/b): \n" + Matrices.matrizToString(this.canal.getEntropiaPosteriori()));
+		this.ventana.setTextPane(this.canal.muestraCanal());
 	}
 
 	private void cargarMatriz()
