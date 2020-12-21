@@ -250,8 +250,7 @@ public class Canal
 
 	public boolean informacionMutuaIsSimetrica()
 	{
-		return this.getEquivocacionEntrada() == this.getEntropiaPriori() - this.getInformacionMutua();
-
+		return Math.abs(this.getInformacionMutua() - this.getInformacionMutuaInversa()) <= Math.pow(10, -7);
 	}
 
 	public boolean informacionMutuaIsMayorIgualCero()

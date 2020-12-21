@@ -67,6 +67,7 @@ public class VentanaCanal extends JFrame
 		this.panel_1.add(this.scrollPane, BorderLayout.CENTER);
 
 		this.textPane = new JTextPane();
+		this.textPane.setEditable(false);
 		this.scrollPane.setViewportView(this.textPane);
 
 		this.panel = new JPanel();
