@@ -86,7 +86,7 @@ public class nodoListaCodificacion
 			simboloAux = (char) this.simbolo + "";
 		}
 
-		return this.simbolo + "\t" + simboloAux + "\t" + String.format("%.5f", this.frecuencia) + "\t"
+		return this.simbolo + "\t\t" + simboloAux + "\t\t" + String.format("%.5f", this.frecuencia) + "\t\t"
 				+ this.codificacion;
 	}
 

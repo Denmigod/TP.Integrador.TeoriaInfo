@@ -31,7 +31,7 @@ public class VentanaCodificacion extends JFrame
 	{
 		this.frame = new JFrame(nombreVentana);
 		this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		this.frame.setBounds(100, 100, 499, 588);
+		this.frame.setBounds(100, 100, 694, 663);
 		this.contentPane = new JPanel();
 		this.contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		this.contentPane.setLayout(new BorderLayout(0, 0));
@@ -53,7 +53,7 @@ public class VentanaCodificacion extends JFrame
 	public void actualizaLista(ArrayList<nodoListaCodificacion> lista)
 	{
 		Iterator<nodoListaCodificacion> it = (lista).iterator();
-		this.textArea.append("Ascii \tSimbolo \tFrecuencia \tCodificacion \n");
+		this.textArea.append("Ascii \t\tSimbolo \t\tFrecuencia \t\tCodificacion \n");
 		while (it.hasNext())
 		{
 			this.textArea.append(it.next().toString() + "\n");

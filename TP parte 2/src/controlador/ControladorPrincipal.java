@@ -3,15 +3,15 @@ package controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import vista.ventanaPrincipal;
+import vista.VentanaPrincipal;
 
 public class ControladorPrincipal implements ActionListener
 {
-	private ventanaPrincipal ventana;
+	private VentanaPrincipal ventana;
 
 	public ControladorPrincipal()
 	{
-		this.ventana = new ventanaPrincipal();
+		this.ventana = new VentanaPrincipal();
 		this.ventana.setActionListener(this);
 	}
 

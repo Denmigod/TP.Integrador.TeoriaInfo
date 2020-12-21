@@ -11,7 +11,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.awt.FlowLayout;
 
-public class ventanaPrincipal extends JFrame
+public class VentanaPrincipal extends JFrame
 {
 
 	private JFrame frame;
@@ -31,7 +31,7 @@ public class ventanaPrincipal extends JFrame
 	/**
 	 * Create the frame.
 	 */
-	public ventanaPrincipal()
+	public VentanaPrincipal()
 	{
 		this.frame = new JFrame("Ventana Principal");
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
